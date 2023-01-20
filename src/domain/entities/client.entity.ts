@@ -10,6 +10,7 @@ export interface ClientInput {
   district: string
   city: string
   state: string
+  created_at?: Date
 }
 
 export interface ClientOutput {
