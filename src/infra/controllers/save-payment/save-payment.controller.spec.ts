@@ -11,7 +11,7 @@ const saveClientUseCase: jest.Mocked<SaveClientUseCaseInterface> = {
 }
 
 const getClientByDocumentUsecase: jest.Mocked<GetClientByDocumentUseCaseInterface> = {
-  execute: jest.fn()
+  execute: jest.fn().mockResolvedValue(null)
 }
 
 const makeSut = (): SaveClientController => {
@@ -31,13 +31,19 @@ const makeInput = (): HttpRequest => ({
     complement: '',
     district: 'Centro',
     city: 'Barbacena',
-    state: 'MG'
+    state: 'MG',
+    holder_name: 'Zé das Couves',
+    card_number: '123456789',
+    month: '05',
+    year: '2025',
+    cvv: '123',
+    installments: 12
   }
 })
 
 let input
 let sut
-describe('SaveClientController', () => {
+describe('SaveClient', () => {
   beforeEach(() => {
     sut = makeSut()
     input = makeInput()
@@ -47,7 +53,10 @@ describe('SaveClientController', () => {
   })
 
   test('should return 400 if validate required fields fails', async () => {
-    const requiredFields = ['person_type', 'email', 'document', 'phone', 'cep', 'street', 'number', 'district', 'city', 'state']
+    const requiredFields = [
+      'person_type', 'email', 'document', 'phone', 'cep', 'street', 'number', 'district', 'city', 'state',
+      'holder_name', 'card_number', 'month', 'year', 'cvv', 'installments'
+    ]
     for (const field of requiredFields) {
       input.body[field] = null
       expect(await sut.execute(input)).toEqual(badRequest(new MissingParamError(field)))
@@ -57,7 +66,6 @@ describe('SaveClientController', () => {
 
   test('should call GetClientByDocumentUseCase once and with correct document', async () => {
     await sut.execute(input)
-
     expect(getClientByDocumentUsecase.execute).toHaveBeenCalledTimes(1)
     expect(getClientByDocumentUsecase.execute).toHaveBeenLastCalledWith('04631250020')
   })
@@ -76,22 +84,8 @@ describe('SaveClientController', () => {
 
   test('should call SaveClientUseCase once and with correct values', async () => {
     await sut.execute(input)
-
     expect(saveClientUseCase.execute).toHaveBeenCalledTimes(1)
-    expect(saveClientUseCase.execute).toHaveBeenLastCalledWith({
-      name: 'Zé das Couves',
-      person_type: 'pf',
-      email: 'zedascouves@gmail.com',
-      document: '04631250020',
-      phone: '32998523623',
-      cep: '36202346',
-      street: 'Rua Teste',
-      number: '123',
-      complement: '',
-      district: 'Centro',
-      city: 'Barbacena',
-      state: 'MG'
-    })
+    expect(saveClientUseCase.execute).toHaveBeenLastCalledWith(input.body)
   })
 
   test('should return 500 if SaveClientUseCase throws an exception', async () => {
