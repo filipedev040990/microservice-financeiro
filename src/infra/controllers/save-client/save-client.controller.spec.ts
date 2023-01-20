@@ -93,4 +93,11 @@ describe('SaveClientController', () => {
       state: 'MG'
     })
   })
+
+  test('should return 500 if SaveClientUseCase throws an exception', async () => {
+    saveClientUseCase.execute.mockImplementationOnce(() => {
+      throw new Error()
+    })
+    expect(await sut.execute(input)).toEqual(serverError(new Error()))
+  })
 })
