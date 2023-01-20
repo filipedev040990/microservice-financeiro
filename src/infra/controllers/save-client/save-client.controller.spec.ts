@@ -2,7 +2,7 @@ import { GetClientByDocumentUseCaseInterface } from '@/domain/usecases/get-clien
 import { SaveClientUseCaseInterface } from '@/domain/usecases/save-client-usecase.interface'
 import { InvalidParamError } from '@/shared/errors/invalid-param.error'
 import { MissingParamError } from '@/shared/errors/missing-param.error'
-import { badRequest } from '@/shared/helpers/http.helpers'
+import { badRequest, serverError } from '@/shared/helpers/http.helpers'
 import { HttpRequest } from '@/shared/types/http.types'
 import { SaveClientController } from './save-client.controller'
 
@@ -65,6 +65,13 @@ describe('SaveClientController', () => {
   test('should return 400 if already exists an client with document provided', async () => {
     getClientByDocumentUsecase.execute.mockReturnValueOnce(Promise.resolve(input))
     expect(await sut.execute(input)).toEqual(badRequest(new InvalidParamError('This document already in use')))
+  })
+
+  test('should return 500 if GetClientByDocumentUseCase throws an exception', async () => {
+    getClientByDocumentUsecase.execute.mockImplementationOnce(() => {
+      throw new Error()
+    })
+    expect(await sut.execute(input)).toEqual(serverError(new Error()))
   })
 
   test('should call SaveClientUseCase once and with correct values', async () => {
