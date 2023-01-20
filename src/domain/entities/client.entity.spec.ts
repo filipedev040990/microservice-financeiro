@@ -1,5 +1,6 @@
-import { Client, ClientInput } from './client.entity'
+import { Client } from './client.entity'
 import MockDate from 'mockdate'
+import { ClientInput } from '../usecases/save-client-usecase.interface'
 
 describe('Client Entity', () => {
   beforeAll(() => {

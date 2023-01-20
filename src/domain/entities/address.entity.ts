@@ -1,13 +1,4 @@
-export interface AddressInput {
-  client_id: string
-  cep: string
-  street: string
-  number: string
-  complement: string
-  district: string
-  city: string
-  state: string
-}
+import { AddressInput } from '../usecases/save-address-usecase.interface'
 
 export class Address {
   public client_id: string

@@ -24,7 +24,14 @@ export class SaveClientController implements ControllerInterface {
         return badRequest(new InvalidParamError('This document already in use'))
       }
 
-      await this.saveClientUseCase.execute(input.body)
+      await this.saveClientUseCase.execute({
+        name: input.body.name,
+        email: input.body.email,
+        person_type: input.body.person_type,
+        document: input.body.document,
+        phone: input.body.phone
+      })
+
       return noContent()
     } catch (error) {
       return serverError(error)

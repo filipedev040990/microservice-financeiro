@@ -14,13 +14,6 @@ const makeFakeClient = (): Client => ({
   email: 'zedascouves@gmail.com',
   document: '04631250020',
   phone: '32998523623',
-  cep: '36202346',
-  street: 'Rua Teste',
-  number: '123',
-  complement: '',
-  district: 'Centro',
-  city: 'Barbacena',
-  state: 'MG',
   created_at: new Date('2023-01-20')
 })
 

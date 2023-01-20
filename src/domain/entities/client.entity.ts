@@ -1,11 +1,5 @@
-export interface ClientInput {
-  name: string
-  person_type: 'pf' | 'pj'
-  email: string
-  document: string
-  phone: string
-  created_at?: Date
-}
+import { ClientInput } from '../usecases/save-client-usecase.interface'
+
 export class Client {
   public id: string
   public name: string

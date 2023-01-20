@@ -85,7 +85,13 @@ describe('SaveClient', () => {
   test('should call SaveClientUseCase once and with correct values', async () => {
     await sut.execute(input)
     expect(saveClientUseCase.execute).toHaveBeenCalledTimes(1)
-    expect(saveClientUseCase.execute).toHaveBeenLastCalledWith(input.body)
+    expect(saveClientUseCase.execute).toHaveBeenLastCalledWith({
+      name: 'Zé das Couves',
+      person_type: 'pf',
+      email: 'zedascouves@gmail.com',
+      document: '04631250020',
+      phone: '32998523623'
+    })
   })
 
   test('should return 500 if SaveClientUseCase throws an exception', async () => {
@@ -97,11 +103,5 @@ describe('SaveClient', () => {
 
   test('should return an client on success', async () => {
     expect(await sut.execute(input)).toEqual(noContent())
-  })
-
-  test('should call SaveCardUseCase once and with correct values', async () => {
-    await sut.execute(input)
-    expect(saveClientUseCase.execute).toHaveBeenCalledTimes(1)
-    expect(saveClientUseCase.execute).toHaveBeenLastCalledWith(input.body)
   })
 })
