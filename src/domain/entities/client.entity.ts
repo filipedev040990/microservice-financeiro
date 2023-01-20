@@ -29,7 +29,7 @@ export class Client {
   public state: string
   public created_at: Date
 
-  constructor (readonly input: ClientInput) {
+  constructor (input: ClientInput) {
     Object.assign(this, input)
     this.created_at = new Date()
   }
