@@ -9,9 +9,10 @@
 5. ✅ Cria dados do pagamento
 
 > ## Exceções
-1. ✅ Retorna **400** se  dados de **Pessoa** não forem fornecidos pelo client
-2. ✅ Retorna **400** se  dados de  **Cartão de crédito** não forem fornecidos pelo client
-3. ✅ Retorna **500** se der erro ao tentar salvar os dados
+1. ✅ Retorna **400** se  cliente já existir (validar pelo documento)
+2. ✅ Retorna **400** se  dados de **Pessoa** não forem fornecidos pelo client
+3. ✅ Retorna **400** se  dados de  **Cartão de crédito** não forem fornecidos pelo client
+4. ✅ Retorna **500** se der erro ao tentar salvar os dados
 
 
 > ## Objeto Pessoa
@@ -42,6 +43,7 @@ ID do cliente
 Status (waiting, processing, confirmed, refused, canceled)
 Valor
 attempts_processing
+produto (curso)
 
 ✅
 ⛔
