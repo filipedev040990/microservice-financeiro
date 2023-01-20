@@ -3,9 +3,8 @@
 > ## Caso de sucesso
 
 1. ✅ Recebe uma requisição do tipo **POST** na rota **/api/payments**
-2. ✅ Valida dados obrigatórios **Pessoa**
-3. ✅ Valida dados do cartão de crédito **Cartão de crédito**
-4. ✅ **Salva** os dados fornecidos
+2. ✅ Valida dados obrigatórios **Pessoa**, **Cartão de crédito**, **Endereço**, **Cartão de crédito**, **Pagamento**
+3. ✅ **Salva** os dados fornecidos em seus respectivos contextos
 5. ✅ Cria dados do pagamento
 
 > ## Exceções
@@ -21,6 +20,8 @@ Nome Completo
 E-mail
 CPF
 Telefone
+
+## Objeto Endereço
 CEP
 Logradouro
 Número 
@@ -30,12 +31,12 @@ Cidade
 Estado 
 
 > ## Objeto Cartão de crédito
+ID do cliente
 Nome do Titular
 Número do Cartão
 Mês 
 Ano
 CVV
-Número de Parcelas
 
 > ## Dados do pagamento
 ID
@@ -44,6 +45,7 @@ Status (waiting, processing, confirmed, refused, canceled)
 Valor
 attempts_processing
 produto (curso)
+Número de Parcelas
 
 ✅
 ⛔

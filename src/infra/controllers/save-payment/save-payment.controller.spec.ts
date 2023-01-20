@@ -95,7 +95,13 @@ describe('SaveClient', () => {
     expect(await sut.execute(input)).toEqual(serverError(new Error()))
   })
 
-  test('should return 204 on success', async () => {
+  test('should return an client on success', async () => {
     expect(await sut.execute(input)).toEqual(noContent())
+  })
+
+  test('should call SaveCardUseCase once and with correct values', async () => {
+    await sut.execute(input)
+    expect(saveClientUseCase.execute).toHaveBeenCalledTimes(1)
+    expect(saveClientUseCase.execute).toHaveBeenLastCalledWith(input.body)
   })
 })
