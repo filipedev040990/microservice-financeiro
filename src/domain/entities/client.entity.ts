@@ -12,13 +12,6 @@ export interface ClientInput {
   state: string
   created_at?: Date
 }
-
-export interface ClientOutput {
-  id: string
-  client: ClientInput
-  created_at: Date
-}
-
 export class Client {
   public id: string
   public created_at: Date
