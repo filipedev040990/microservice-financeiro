@@ -2,7 +2,7 @@ import { GetClientByDocumentUseCaseInterface } from '@/domain/usecases/get-clien
 import { SaveClientUseCaseInterface } from '@/domain/usecases/save-client-usecase.interface'
 import { InvalidParamError } from '@/shared/errors/invalid-param.error'
 import { MissingParamError } from '@/shared/errors/missing-param.error'
-import { badRequest, serverError } from '@/shared/helpers/http.helpers'
+import { badRequest, noContent, serverError } from '@/shared/helpers/http.helpers'
 import { HttpRequest } from '@/shared/types/http.types'
 import { SaveClientController } from './save-client.controller'
 
@@ -99,5 +99,9 @@ describe('SaveClientController', () => {
       throw new Error()
     })
     expect(await sut.execute(input)).toEqual(serverError(new Error()))
+  })
+
+  test('should return 204 on success', async () => {
+    expect(await sut.execute(input)).toEqual(noContent())
   })
 })

@@ -3,7 +3,7 @@ import { GetClientByDocumentUseCaseInterface } from '@/domain/usecases/get-clien
 import { SaveClientUseCaseInterface } from '@/domain/usecases/save-client-usecase.interface'
 import { InvalidParamError } from '@/shared/errors/invalid-param.error'
 import { MissingParamError } from '@/shared/errors/missing-param.error'
-import { badRequest, serverError } from '@/shared/helpers/http.helpers'
+import { badRequest, noContent, serverError } from '@/shared/helpers/http.helpers'
 import { HttpRequest, HttpResponse } from '@/shared/types/http.types'
 
 export class SaveClientController implements ControllerInterface {
@@ -25,7 +25,7 @@ export class SaveClientController implements ControllerInterface {
       }
 
       await this.saveClientUseCase.execute(input.body)
-      return null
+      return noContent()
     } catch (error) {
       return serverError(error)
     }
