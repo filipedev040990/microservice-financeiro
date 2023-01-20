@@ -1,6 +1,7 @@
 import { ControllerInterface } from '@/domain/controllers/controller.interface'
 import { GetClientByDocumentUseCaseInterface } from '@/domain/usecases/get-client-by-document'
 import { SaveClientUseCaseInterface } from '@/domain/usecases/save-client-usecase.interface'
+import { InvalidParamError } from '@/shared/errors/invalid-param.error'
 import { MissingParamError } from '@/shared/errors/missing-param.error'
 import { badRequest } from '@/shared/helpers/http.helpers'
 import { HttpRequest, HttpResponse } from '@/shared/types/http.types'
@@ -16,7 +17,10 @@ export class SaveClientController implements ControllerInterface {
     if (missingParam) {
       return badRequest(new MissingParamError(missingParam))
     }
-    await this.getClientByDocumentUsecase.execute(input.body.document)
+    const clientExists = await this.getClientByDocumentUsecase.execute(input.body.document)
+    if (clientExists) {
+      return badRequest(new InvalidParamError('This document already in use'))
+    }
     return null
   }
 

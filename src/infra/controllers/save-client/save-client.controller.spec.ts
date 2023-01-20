@@ -1,5 +1,6 @@
 import { GetClientByDocumentUseCaseInterface } from '@/domain/usecases/get-client-by-document'
 import { SaveClientUseCaseInterface } from '@/domain/usecases/save-client-usecase.interface'
+import { InvalidParamError } from '@/shared/errors/invalid-param.error'
 import { MissingParamError } from '@/shared/errors/missing-param.error'
 import { badRequest } from '@/shared/helpers/http.helpers'
 import { HttpRequest } from '@/shared/types/http.types'
@@ -58,5 +59,10 @@ describe('SaveClientController', () => {
 
     expect(getClientByDocumentUsecase.execute).toHaveBeenCalledTimes(1)
     expect(getClientByDocumentUsecase.execute).toHaveBeenLastCalledWith('04631250020')
+  })
+
+  test('should return 400 if already exists an client with document provided', async () => {
+    getClientByDocumentUsecase.execute.mockReturnValueOnce(Promise.resolve(input))
+    expect(await sut.execute(input)).toEqual(badRequest(new InvalidParamError('This document already in use')))
   })
 })
