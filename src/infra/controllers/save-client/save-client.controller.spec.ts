@@ -45,7 +45,7 @@ describe('SaveClientController', () => {
   })
 
   test('should return 400 if validate required fields fails', async () => {
-    const requiredFields = ['person_type', 'email']
+    const requiredFields = ['person_type', 'email', 'document', 'phone', 'cep', 'street', 'number', 'district', 'city', 'state']
     for (const field of requiredFields) {
       input.body[field] = null
       expect(await sut.execute(input)).toEqual(badRequest(new MissingParamError(field)))

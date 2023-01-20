@@ -21,7 +21,7 @@ export class SaveClientController implements ControllerInterface {
   }
 
   validateRequiredFields = (input: HttpRequest): string => {
-    const requiredFields = ['person_type', 'email']
+    const requiredFields = ['person_type', 'email', 'document', 'phone', 'cep', 'street', 'number', 'district', 'city', 'state']
     for (const field of requiredFields) {
       if (!input.body[field]) {
         return field
