@@ -43,10 +43,14 @@ describe('SaveClientController', () => {
   afterEach(() => {
     jest.resetAllMocks()
   })
-  test('should return 400 if person_type is not provided', async () => {
-    input.body.person_type = null
 
-    expect(await sut.execute(input)).toEqual(badRequest(new MissingParamError('person_type')))
+  test('should return 400 if validate required fields fails', async () => {
+    const requiredFields = ['person_type', 'email']
+    for (const field of requiredFields) {
+      input.body[field] = null
+      expect(await sut.execute(input)).toEqual(badRequest(new MissingParamError(field)))
+      input.body[field] = field
+    }
   })
 
   test('should call GetClientByDocumentUseCase once and with correct document', async () => {
