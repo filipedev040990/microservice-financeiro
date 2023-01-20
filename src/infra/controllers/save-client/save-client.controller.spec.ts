@@ -1,5 +1,7 @@
 import { GetClientByDocumentUseCaseInterface } from '@/domain/usecases/get-client-by-document'
 import { SaveClientUseCaseInterface } from '@/domain/usecases/save-client-usecase.interface'
+import { MissingParamError } from '@/shared/errors/missing-param.error'
+import { badRequest } from '@/shared/helpers/http.helpers'
 import { HttpRequest } from '@/shared/types/http.types'
 import { SaveClientController } from './save-client.controller'
 
@@ -31,10 +33,23 @@ const makeInput = (): HttpRequest => ({
   }
 })
 
+let input
+let sut
 describe('SaveClientController', () => {
+  beforeEach(() => {
+    sut = makeSut()
+    input = makeInput()
+  })
+  afterEach(() => {
+    jest.resetAllMocks()
+  })
+  test('should return 400 if person_type is not provided', async () => {
+    input.body.person_type = null
+
+    expect(await sut.execute(input)).toEqual(badRequest(new MissingParamError('person_type')))
+  })
+
   test('should call GetClientByDocumentUseCase once and with correct document', async () => {
-    const sut = makeSut()
-    const input = makeInput()
     await sut.execute(input)
 
     expect(getClientByDocumentUsecase.execute).toHaveBeenCalledTimes(1)
