@@ -1,11 +1,6 @@
-# template
-Template padrão para projetos utilizando typescript. Neste projeto já estão prontas as seguintes configurações:
-
-<ul>
-    <li>ESLINT</li>
-    <li>LINTSTAGED</li>
-    <li>JEST</li>
-    <li>HUSKY</li>
-</ul>
+# Microserviço Financeiro
+Este microserviço recebe e salva dados de um pagamento
+Este microserviço processa o pagamento
+Este microserviço publica uma mensagem na fila 'payment_confirmed'
 
 
