@@ -29,4 +29,11 @@ describe('SaveAddressUseCase', () => {
     expect(addressRepository.save).toHaveBeenCalledTimes(1)
     expect(addressRepository.save).toHaveBeenCalledWith(input)
   })
+
+  test('should return server error if AddressRepository.save throw an exception', async () => {
+    addressRepository.save.mockImplementationOnce(() => {
+      throw new Error()
+    })
+    await expect(sut.execute(input)).rejects.toThrow()
+  })
 })
