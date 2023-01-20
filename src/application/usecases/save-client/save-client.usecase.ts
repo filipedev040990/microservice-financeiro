@@ -6,6 +6,5 @@ export class SaveClientUseCase implements SaveClientUseCaseInterface {
   constructor (private readonly clientRepository: SaveClientRepositoryInterface) {}
   async execute (input: ClientInput): Promise<void> {
     await this.clientRepository.save(input)
-    return null
   }
 }

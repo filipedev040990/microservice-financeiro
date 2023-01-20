@@ -54,4 +54,13 @@ describe('SaveClientUseCase', () => {
       created_at: new Date()
     })
   })
+
+  test('should return server error if ClientRepository.save throw an exception', async () => {
+    const sut = makeSut()
+    const input = makeInput()
+    clientRepository.save.mockImplementationOnce(() => {
+      throw new Error()
+    })
+    await expect(sut.execute(input)).rejects.toThrow()
+  })
 })
