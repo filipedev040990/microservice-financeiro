@@ -11,6 +11,7 @@ describe('Client Entity', () => {
 
   test('should create a new instance of Client', () => {
     const input: ClientInput = {
+      name: 'Zé das Couves',
       person_type: 'pf',
       email: 'zedascouves@gmail.com',
       document: '04631250020',

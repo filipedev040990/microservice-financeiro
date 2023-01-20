@@ -17,10 +17,13 @@ export class SaveClientController implements ControllerInterface {
     if (missingParam) {
       return badRequest(new MissingParamError(missingParam))
     }
+
     const clientExists = await this.getClientByDocumentUsecase.execute(input.body.document)
     if (clientExists) {
       return badRequest(new InvalidParamError('This document already in use'))
     }
+
+    await this.saveClientUseCase.execute(input.body)
     return null
   }
 

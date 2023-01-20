@@ -12,6 +12,7 @@ const makeSut = (): SaveClientUseCase => {
 }
 
 const makeInput = (): ClientInput => ({
+  name: 'Zé das Couves',
   person_type: 'pf',
   email: 'zedascouves@gmail.com',
   document: '04631250020',
@@ -40,6 +41,7 @@ describe('SaveClientUseCase', () => {
 
     expect(clientRepository.save).toHaveBeenCalledTimes(1)
     expect(clientRepository.save).toHaveBeenCalledWith({
+      name: 'Zé das Couves',
       person_type: 'pf',
       email: 'zedascouves@gmail.com',
       document: '04631250020',

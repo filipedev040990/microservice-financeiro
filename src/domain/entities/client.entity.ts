@@ -1,4 +1,5 @@
 export interface ClientInput {
+  name: string
   person_type: 'pf' | 'pj'
   email: string
   document: string
@@ -14,7 +15,7 @@ export interface ClientInput {
 }
 export class Client {
   public id: string
-  public created_at: Date
+  public name: string
   public person_type: 'pf' | 'pj'
   public email: string
   public document: string
@@ -26,6 +27,7 @@ export class Client {
   public district: string
   public city: string
   public state: string
+  public created_at: Date
 
   constructor (readonly input: ClientInput) {
     Object.assign(this, input)

@@ -20,6 +20,7 @@ const makeSut = (): SaveClientController => {
 
 const makeInput = (): HttpRequest => ({
   body: {
+    name: 'Zé das Couves',
     person_type: 'pf',
     email: 'zedascouves@gmail.com',
     document: '04631250020',
@@ -64,5 +65,25 @@ describe('SaveClientController', () => {
   test('should return 400 if already exists an client with document provided', async () => {
     getClientByDocumentUsecase.execute.mockReturnValueOnce(Promise.resolve(input))
     expect(await sut.execute(input)).toEqual(badRequest(new InvalidParamError('This document already in use')))
+  })
+
+  test('should call SaveClientUseCase once and with correct values', async () => {
+    await sut.execute(input)
+
+    expect(saveClientUseCase.execute).toHaveBeenCalledTimes(1)
+    expect(saveClientUseCase.execute).toHaveBeenLastCalledWith({
+      name: 'Zé das Couves',
+      person_type: 'pf',
+      email: 'zedascouves@gmail.com',
+      document: '04631250020',
+      phone: '32998523623',
+      cep: '36202346',
+      street: 'Rua Teste',
+      number: '123',
+      complement: '',
+      district: 'Centro',
+      city: 'Barbacena',
+      state: 'MG'
+    })
   })
 })
