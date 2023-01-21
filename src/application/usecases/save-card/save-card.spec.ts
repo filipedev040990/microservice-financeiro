@@ -17,10 +17,19 @@ let sut
 describe('SaveCardUseCase', () => {
   beforeEach(() => {
     sut = new SaveCardUseCase(cardRepository)
+    jest.resetAllMocks()
   })
+
   test('should call CardRepository.save once and with correct values', async () => {
     await sut.execute(input)
     expect(cardRepository.save).toHaveBeenCalledTimes(1)
     expect(cardRepository.save).toHaveBeenCalledWith(input)
+  })
+
+  test('should return server error if CardRepository.save throw an exception', async () => {
+    cardRepository.save.mockImplementationOnce(() => {
+      throw new Error()
+    })
+    await expect(sut.execute(input)).rejects.toThrow()
   })
 })
