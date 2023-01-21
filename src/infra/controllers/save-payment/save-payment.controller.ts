@@ -3,6 +3,7 @@ import { GetClientByDocumentUseCaseInterface } from '@/domain/usecases/get-clien
 import { SaveAddressUseCaseInterface } from '@/domain/usecases/save-address-usecase.interface'
 import { SaveCardUseCaseInterface } from '@/domain/usecases/save-card-usecase.interface'
 import { SaveClientUseCaseInterface } from '@/domain/usecases/save-client-usecase.interface'
+import { SavePaymentUseCaseInterface } from '@/domain/usecases/save-payment-usecase.interface'
 import { InvalidParamError } from '@/shared/errors/invalid-param.error'
 import { MissingParamError } from '@/shared/errors/missing-param.error'
 import { badRequest, noContent, serverError } from '@/shared/helpers/http.helpers'
@@ -13,7 +14,8 @@ export class SavePaymentController implements ControllerInterface {
     private readonly getClientByDocumentUsecase: GetClientByDocumentUseCaseInterface,
     private readonly saveClientUseCase: SaveClientUseCaseInterface,
     private readonly saveAddressUseCase: SaveAddressUseCaseInterface,
-    private readonly saveCardUseCase: SaveCardUseCaseInterface
+    private readonly saveCardUseCase: SaveCardUseCaseInterface,
+    private readonly savePaymentUseCase: SavePaymentUseCaseInterface
   ) {}
 
   async execute (input: HttpRequest): Promise<HttpResponse> {
@@ -28,7 +30,7 @@ export class SavePaymentController implements ControllerInterface {
         return badRequest(new InvalidParamError('This document already in use'))
       }
 
-      await this.saveClientUseCase.execute({
+      const client = await this.saveClientUseCase.execute({
         name: input.body.name,
         email: input.body.email,
         person_type: input.body.person_type,
@@ -37,7 +39,7 @@ export class SavePaymentController implements ControllerInterface {
       })
 
       await this.saveAddressUseCase.execute({
-        client_id: input.body.client_id,
+        client_id: client.id,
         cep: input.body.cep,
         street: input.body.street,
         number: input.body.number,
