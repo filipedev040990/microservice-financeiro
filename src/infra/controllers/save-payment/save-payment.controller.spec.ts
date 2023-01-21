@@ -5,7 +5,7 @@ import { SaveClientUseCaseInterface } from '@/domain/usecases/save-client-usecas
 import { SavePaymentUseCaseInterface } from '@/domain/usecases/save-payment-usecase.interface'
 import { InvalidParamError } from '@/shared/errors/invalid-param.error'
 import { MissingParamError } from '@/shared/errors/missing-param.error'
-import { badRequest, serverError } from '@/shared/helpers/http.helpers'
+import { badRequest, noContent, serverError } from '@/shared/helpers/http.helpers'
 import { HttpRequest } from '@/shared/types/http.types'
 import { SavePaymentController } from './save-payment.controller'
 
@@ -183,5 +183,9 @@ describe('SaveClient', () => {
       throw new Error()
     })
     expect(await sut.execute(input)).toEqual(serverError(new Error()))
+  })
+
+  test('should return 204 on sucess', async () => {
+    expect(await sut.execute(input)).toEqual(noContent())
   })
 })
