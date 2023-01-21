@@ -57,6 +57,15 @@ export class SavePaymentController implements ControllerInterface {
         year: input.body.year
       })
 
+      await this.savePaymentUseCase.execute({
+        client_id: client.id,
+        status: 'waiting',
+        attempts_processing: 0,
+        installments: input.body.installments,
+        description: 'Compra de curso',
+        value: 1200
+      })
+
       return noContent()
     } catch (error) {
       return serverError(error)

@@ -10,7 +10,14 @@ import { HttpRequest } from '@/shared/types/http.types'
 import { SavePaymentController } from './save-payment.controller'
 
 const saveClientUseCase: jest.Mocked<SaveClientUseCaseInterface> = {
-  execute: jest.fn()
+  execute: jest.fn().mockResolvedValue({
+    id: '123456789',
+    name: 'Zé das Couves',
+    person_type: 'pf',
+    email: 'zedascouves@gmail.com',
+    document: '04631250020',
+    phone: '32998523623'
+  })
 }
 
 const getClientByDocumentUsecase: jest.Mocked<GetClientByDocumentUseCaseInterface> = {
@@ -64,7 +71,7 @@ describe('SaveClient', () => {
     input = makeInput()
   })
   afterEach(() => {
-    jest.resetAllMocks()
+    jest.clearAllMocks()
   })
 
   test('should return 400 if validate required fields fails', async () => {
@@ -117,10 +124,11 @@ describe('SaveClient', () => {
     expect(await sut.execute(input)).toEqual(serverError(new Error()))
   })
 
-  test.skip('should call SaveAddressUseCase once and with correct values', async () => {
+  test('should call SaveAddressUseCase once and with correct values', async () => {
     await sut.execute(input)
     expect(saveAddressUseCase.execute).toHaveBeenCalledTimes(1)
     expect(saveAddressUseCase.execute).toHaveBeenLastCalledWith({
+      client_id: '123456789',
       cep: '36202346',
       street: 'Rua Teste',
       number: '123',
@@ -131,14 +139,14 @@ describe('SaveClient', () => {
     })
   })
 
-  test.skip('should return 500 if SaveAddressUseCase throws an exception', async () => {
+  test('should return 500 if SaveAddressUseCase throws an exception', async () => {
     saveAddressUseCase.execute.mockImplementationOnce(() => {
       throw new Error()
     })
     expect(await sut.execute(input)).toEqual(serverError(new Error()))
   })
 
-  test.skip('should call SaveCardUseCase once and with correct values', async () => {
+  test('should call SaveCardUseCase once and with correct values', async () => {
     await sut.execute(input)
     expect(saveCardUseCase.execute).toHaveBeenCalledTimes(1)
     expect(saveCardUseCase.execute).toHaveBeenLastCalledWith({
@@ -150,22 +158,22 @@ describe('SaveClient', () => {
     })
   })
 
-  test.skip('should return 500 if SaveCardUseCase throws an exception', async () => {
+  test('should return 500 if SaveCardUseCase throws an exception', async () => {
     saveCardUseCase.execute.mockImplementationOnce(() => {
       throw new Error()
     })
     expect(await sut.execute(input)).toEqual(serverError(new Error()))
   })
 
-  test.skip('should call SavePaymentUseCase once and with correct values', async () => {
+  test('should call SavePaymentUseCase once and with correct values', async () => {
     await sut.execute(input)
     expect(savePaymentUseCase.execute).toHaveBeenCalledTimes(1)
     expect(savePaymentUseCase.execute).toHaveBeenLastCalledWith({
-      client_id: '12345679',
+      client_id: '123456789',
       status: 'waiting',
       value: 1200,
       attempts_processing: 0,
-      installments: 1,
+      installments: 12,
       description: 'Compra de curso'
     })
   })
