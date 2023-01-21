@@ -53,7 +53,8 @@ export class SavePaymentController implements ControllerInterface {
 
   validateRequiredFields = (input: HttpRequest): string => {
     const requiredFields = [
-      'person_type', 'email', 'document', 'phone', 'cep', 'street', 'number', 'district', 'city', 'state',
+      'person_type', 'email', 'document', 'phone',
+      'cep', 'street', 'number', 'district', 'city', 'state',
       'holder_name', 'card_number', 'month', 'year', 'cvv', 'installments'
     ]
     for (const field of requiredFields) {

@@ -3,7 +3,7 @@
 > ## Caso de sucesso
 
 1. ✅ Recebe uma requisição do tipo **POST** na rota **/api/payments**
-2. ✅ Valida dados obrigatórios **Pessoa**, **Cartão de crédito**, **Endereço**, **Cartão de crédito**, **Pagamento**
+2. ✅ Valida dados obrigatórios **Pessoa**,  **Endereço**, **Cartão de crédito**, **Pagamento**
 3. ✅ **Salva** os dados fornecidos em seus respectivos contextos
 5. ✅ Cria dados do pagamento
 

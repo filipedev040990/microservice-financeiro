@@ -59,7 +59,8 @@ describe('SaveClient', () => {
 
   test('should return 400 if validate required fields fails', async () => {
     const requiredFields = [
-      'person_type', 'email', 'document', 'phone', 'cep', 'street', 'number', 'district', 'city', 'state',
+      'person_type', 'email', 'document', 'phone', 'cep',
+      'street', 'number', 'district', 'city', 'state',
       'holder_name', 'card_number', 'month', 'year', 'cvv', 'installments'
     ]
     for (const field of requiredFields) {
@@ -118,5 +119,12 @@ describe('SaveClient', () => {
       city: 'Barbacena',
       state: 'MG'
     })
+  })
+
+  test('should return 500 if SaveAddressUseCase throws an exception', async () => {
+    saveAddressUseCase.execute.mockImplementationOnce(() => {
+      throw new Error()
+    })
+    expect(await sut.execute(input)).toEqual(serverError(new Error()))
   })
 })
