@@ -1,10 +1,11 @@
 import { GetClientByDocumentUseCaseInterface } from '@/domain/usecases/get-client-by-document'
+import { SaveAddressUseCaseInterface } from '@/domain/usecases/save-address-usecase.interface'
 import { SaveClientUseCaseInterface } from '@/domain/usecases/save-client-usecase.interface'
 import { InvalidParamError } from '@/shared/errors/invalid-param.error'
 import { MissingParamError } from '@/shared/errors/missing-param.error'
-import { badRequest, noContent, serverError } from '@/shared/helpers/http.helpers'
+import { badRequest, serverError } from '@/shared/helpers/http.helpers'
 import { HttpRequest } from '@/shared/types/http.types'
-import { SaveClientController } from './save-payment.controller'
+import { SavePaymentController } from './save-payment.controller'
 
 const saveClientUseCase: jest.Mocked<SaveClientUseCaseInterface> = {
   execute: jest.fn()
@@ -14,8 +15,12 @@ const getClientByDocumentUsecase: jest.Mocked<GetClientByDocumentUseCaseInterfac
   execute: jest.fn().mockResolvedValue(null)
 }
 
-const makeSut = (): SaveClientController => {
-  return new SaveClientController(getClientByDocumentUsecase, saveClientUseCase)
+const saveAddressUseCase: jest.Mocked<SaveAddressUseCaseInterface> = {
+  execute: jest.fn()
+}
+
+const makeSut = (): SavePaymentController => {
+  return new SavePaymentController(getClientByDocumentUsecase, saveClientUseCase, saveAddressUseCase)
 }
 
 const makeInput = (): HttpRequest => ({
@@ -101,7 +106,17 @@ describe('SaveClient', () => {
     expect(await sut.execute(input)).toEqual(serverError(new Error()))
   })
 
-  test('should return an client on success', async () => {
-    expect(await sut.execute(input)).toEqual(noContent())
+  test('should call SaveAddressUseCase once and with correct values', async () => {
+    await sut.execute(input)
+    expect(saveAddressUseCase.execute).toHaveBeenCalledTimes(1)
+    expect(saveAddressUseCase.execute).toHaveBeenLastCalledWith({
+      cep: '36202346',
+      street: 'Rua Teste',
+      number: '123',
+      complement: '',
+      district: 'Centro',
+      city: 'Barbacena',
+      state: 'MG'
+    })
   })
 })
