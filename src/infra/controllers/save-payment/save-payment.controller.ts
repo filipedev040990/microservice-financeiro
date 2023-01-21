@@ -1,11 +1,5 @@
-import { ControllerInterface } from '@/domain/controllers/controller.interface'
-import { GetClientByDocumentUseCaseInterface } from '@/domain/usecases/get-client-by-document'
-import { SaveAddressUseCaseInterface } from '@/domain/usecases/save-address-usecase.interface'
-import { SaveCardUseCaseInterface } from '@/domain/usecases/save-card-usecase.interface'
-import { SaveClientUseCaseInterface } from '@/domain/usecases/save-client-usecase.interface'
-import { SavePaymentUseCaseInterface } from '@/domain/usecases/save-payment-usecase.interface'
-import { InvalidParamError } from '@/shared/errors/invalid-param.error'
-import { MissingParamError } from '@/shared/errors/missing-param.error'
+import { ControllerInterface, SaveAddressUseCaseInterface, SaveCardUseCaseInterface, SaveClientUseCaseInterface, SavePaymentUseCaseInterface, GetClientByDocumentUseCaseInterface } from '@/domain/interfaces'
+import { InvalidParamError, MissingParamError } from '@/shared/errors'
 import { badRequest, noContent, serverError } from '@/shared/helpers/http.helpers'
 import { HttpRequest, HttpResponse } from '@/shared/types/http.types'
 
