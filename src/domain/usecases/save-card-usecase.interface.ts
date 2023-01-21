@@ -4,9 +4,8 @@ export interface CardInput {
   month: string
   year: string
   cvv: string
-  installments: number
 }
 
-export interface SaveCardUseCase {
+export interface SaveCardUseCaseInterface {
   execute(input: CardInput): Promise<void>
 }

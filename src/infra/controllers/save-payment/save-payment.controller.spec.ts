@@ -1,5 +1,6 @@
 import { GetClientByDocumentUseCaseInterface } from '@/domain/usecases/get-client-by-document'
 import { SaveAddressUseCaseInterface } from '@/domain/usecases/save-address-usecase.interface'
+import { SaveCardUseCaseInterface } from '@/domain/usecases/save-card-usecase.interface'
 import { SaveClientUseCaseInterface } from '@/domain/usecases/save-client-usecase.interface'
 import { InvalidParamError } from '@/shared/errors/invalid-param.error'
 import { MissingParamError } from '@/shared/errors/missing-param.error'
@@ -19,8 +20,12 @@ const saveAddressUseCase: jest.Mocked<SaveAddressUseCaseInterface> = {
   execute: jest.fn()
 }
 
+const saveCardUseCase: jest.Mocked<SaveCardUseCaseInterface> = {
+  execute: jest.fn()
+}
+
 const makeSut = (): SavePaymentController => {
-  return new SavePaymentController(getClientByDocumentUsecase, saveClientUseCase, saveAddressUseCase)
+  return new SavePaymentController(getClientByDocumentUsecase, saveClientUseCase, saveAddressUseCase, saveCardUseCase)
 }
 
 const makeInput = (): HttpRequest => ({
@@ -126,5 +131,17 @@ describe('SaveClient', () => {
       throw new Error()
     })
     expect(await sut.execute(input)).toEqual(serverError(new Error()))
+  })
+
+  test('should call SaveCardUseCase once and with correct values', async () => {
+    await sut.execute(input)
+    expect(saveCardUseCase.execute).toHaveBeenCalledTimes(1)
+    expect(saveCardUseCase.execute).toHaveBeenLastCalledWith({
+      holder_name: 'Zé das Couves',
+      card_number: '123456789',
+      month: '05',
+      year: '2025',
+      cvv: '123'
+    })
   })
 })

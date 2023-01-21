@@ -1,6 +1,7 @@
 import { ControllerInterface } from '@/domain/controllers/controller.interface'
 import { GetClientByDocumentUseCaseInterface } from '@/domain/usecases/get-client-by-document'
 import { SaveAddressUseCaseInterface } from '@/domain/usecases/save-address-usecase.interface'
+import { SaveCardUseCaseInterface } from '@/domain/usecases/save-card-usecase.interface'
 import { SaveClientUseCaseInterface } from '@/domain/usecases/save-client-usecase.interface'
 import { InvalidParamError } from '@/shared/errors/invalid-param.error'
 import { MissingParamError } from '@/shared/errors/missing-param.error'
@@ -11,7 +12,8 @@ export class SavePaymentController implements ControllerInterface {
   constructor (
     private readonly getClientByDocumentUsecase: GetClientByDocumentUseCaseInterface,
     private readonly saveClientUseCase: SaveClientUseCaseInterface,
-    private readonly saveAddressUseCase: SaveAddressUseCaseInterface
+    private readonly saveAddressUseCase: SaveAddressUseCaseInterface,
+    private readonly saveCardUseCase: SaveCardUseCaseInterface
   ) {}
 
   async execute (input: HttpRequest): Promise<HttpResponse> {
@@ -43,6 +45,14 @@ export class SavePaymentController implements ControllerInterface {
         district: input.body.district,
         city: input.body.city,
         state: input.body.state
+      })
+
+      await this.saveCardUseCase.execute({
+        holder_name: input.body.holder_name,
+        card_number: input.body.card_number,
+        cvv: input.body.cvv,
+        month: input.body.month,
+        year: input.body.year
       })
 
       return noContent()
