@@ -177,4 +177,11 @@ describe('SaveClient', () => {
       description: 'Compra de curso'
     })
   })
+
+  test('should return 500 if SaveCardUseCase throws an exception', async () => {
+    savePaymentUseCase.execute.mockImplementationOnce(() => {
+      throw new Error()
+    })
+    expect(await sut.execute(input)).toEqual(serverError(new Error()))
+  })
 })
