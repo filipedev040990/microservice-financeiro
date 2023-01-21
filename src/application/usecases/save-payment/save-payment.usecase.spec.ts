@@ -28,4 +28,11 @@ describe('SavePaymentUseCase', () => {
     expect(paymentRepository.save).toHaveBeenCalledTimes(1)
     expect(paymentRepository.save).toHaveBeenCalledWith(input)
   })
+
+  test('should return server error if PaymentRepository.save throw an exception', async () => {
+    paymentRepository.save.mockImplementationOnce(() => {
+      throw new Error()
+    })
+    await expect(sut.execute(input)).rejects.toThrow()
+  })
 })
