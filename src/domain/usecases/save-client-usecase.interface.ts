@@ -2,7 +2,7 @@ import { Client } from '../entities/client.entity'
 
 export interface ClientInput {
   name: string
-  person_type: 'pf' | 'pj'
+  person_type: string
   email: string
   document: string
   phone: string
