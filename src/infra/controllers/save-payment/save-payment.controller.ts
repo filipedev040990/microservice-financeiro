@@ -44,6 +44,7 @@ export class SavePaymentController implements ControllerInterface {
       })
 
       await this.saveCardUseCase.execute({
+        client_id: client.id,
         holder_name: input.body.holder_name,
         card_number: input.body.card_number,
         cvv: input.body.cvv,

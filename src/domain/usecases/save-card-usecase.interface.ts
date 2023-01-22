@@ -1,4 +1,5 @@
 export interface CardInput {
+  client_id: string
   holder_name: string
   card_number: string
   month: string

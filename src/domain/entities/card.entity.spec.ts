@@ -4,6 +4,7 @@ import { Card } from './card.entity'
 describe('Card Entity', () => {
   test('should create an instance of Card', () => {
     const input: CardInput = {
+      client_id: '123456789',
       holder_name: 'Zé das Couves',
       card_number: '123456789',
       cvv: '132',
@@ -15,6 +16,7 @@ describe('Card Entity', () => {
 
     expect(card).toBeTruthy()
     expect(card).toEqual({
+      client_id: '123456789',
       holder_name: 'Zé das Couves',
       card_number: '123456789',
       cvv: '132',

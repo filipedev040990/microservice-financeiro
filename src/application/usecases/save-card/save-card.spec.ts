@@ -3,6 +3,7 @@ import { CardInput } from '@/domain/usecases/save-card-usecase.interface'
 import { SaveCardUseCase } from './save-card.usecase'
 
 const input: CardInput = {
+  client_id: '123456789',
   holder_name: 'Zé das Couves',
   card_number: '123456789',
   month: '05',

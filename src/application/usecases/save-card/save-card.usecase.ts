@@ -8,6 +8,7 @@ export class SaveCardUseCase implements SaveCardUseCaseInterface {
     const card = new Card(input)
 
     await this.cardRepository.save({
+      client_id: input.client_id,
       holder_name: card.holder_name,
       card_number: card.card_number,
       cvv: card.cvv,

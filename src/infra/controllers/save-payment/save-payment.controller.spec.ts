@@ -145,6 +145,7 @@ describe('SaveClient', () => {
     await sut.execute(input)
     expect(saveCardUseCase.execute).toHaveBeenCalledTimes(1)
     expect(saveCardUseCase.execute).toHaveBeenLastCalledWith({
+      client_id: '123456789',
       holder_name: 'Zé das Couves',
       card_number: '123456789',
       month: '05',
