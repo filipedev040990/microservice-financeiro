@@ -1,4 +1,5 @@
 import { SaveAddressUseCaseInterface, SaveCardUseCaseInterface, SaveClientUseCaseInterface, SavePaymentUseCaseInterface, GetClientByDocumentUseCaseInterface } from '@/domain/interfaces'
+import { EmailValidatorInterface } from '@/domain/validation/email-validator.interface'
 import { InvalidParamError, MissingParamError } from '@/shared/errors'
 import { badRequest, noContent, serverError } from '@/shared/helpers/http.helpers'
 import { HttpRequest } from '@/shared/types/http.types'
@@ -31,8 +32,12 @@ const savePaymentUseCase: jest.Mocked<SavePaymentUseCaseInterface> = {
   execute: jest.fn()
 }
 
+const emailValidator: jest.Mocked<EmailValidatorInterface> = {
+  execute: jest.fn()
+}
+
 const makeSut = (): SavePaymentController => {
-  return new SavePaymentController(getClientByDocumentUsecase, saveClientUseCase, saveAddressUseCase, saveCardUseCase, savePaymentUseCase)
+  return new SavePaymentController(getClientByDocumentUsecase, saveClientUseCase, saveAddressUseCase, saveCardUseCase, savePaymentUseCase, emailValidator)
 }
 
 const makeInput = (): HttpRequest => ({
@@ -81,6 +86,11 @@ describe('SaveClient', () => {
       expect(await sut.execute(input)).toEqual(badRequest(new MissingParamError(field)))
       input.body[field] = field
     }
+  })
+
+  test('should return call Email Validator with correct email', async () => {
+    await sut.execute(input)
+    expect(emailValidator.execute).toHaveBeenCalledWith('zedascouves@gmail.com')
   })
 
   test('should call GetClientByDocumentUseCase once and with correct document', async () => {

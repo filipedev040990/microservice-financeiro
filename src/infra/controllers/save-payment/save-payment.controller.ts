@@ -1,4 +1,5 @@
 import { ControllerInterface, SaveAddressUseCaseInterface, SaveCardUseCaseInterface, SaveClientUseCaseInterface, SavePaymentUseCaseInterface, GetClientByDocumentUseCaseInterface } from '@/domain/interfaces'
+import { EmailValidatorInterface } from '@/domain/validation/email-validator.interface'
 import constants from '@/shared/constants'
 import { InvalidParamError, MissingParamError } from '@/shared/errors'
 import { badRequest, noContent, serverError } from '@/shared/helpers/http.helpers'
@@ -10,7 +11,8 @@ export class SavePaymentController implements ControllerInterface {
     private readonly saveClientUseCase: SaveClientUseCaseInterface,
     private readonly saveAddressUseCase: SaveAddressUseCaseInterface,
     private readonly saveCardUseCase: SaveCardUseCaseInterface,
-    private readonly savePaymentUseCase: SavePaymentUseCaseInterface
+    private readonly savePaymentUseCase: SavePaymentUseCaseInterface,
+    private readonly emailValidator: EmailValidatorInterface
   ) {}
 
   async execute (input: HttpRequest): Promise<HttpResponse> {
@@ -24,6 +26,8 @@ export class SavePaymentController implements ControllerInterface {
       if (clientExists) {
         return badRequest(new InvalidParamError('This document already in use'))
       }
+
+      await this.emailValidator.execute(input.body.email)
 
       const client = await this.saveClientUseCase.execute({
         name: input.body.name,
