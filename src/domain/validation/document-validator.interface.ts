@@ -1,3 +1,3 @@
 export interface DocumentValidatorInterface {
-  execute(document: string, value: string): boolean
+  execute(documentType: string, value: string): boolean
 }
