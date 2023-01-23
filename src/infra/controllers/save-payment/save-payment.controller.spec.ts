@@ -129,18 +129,12 @@ describe('SaveClient', () => {
 
   test('should call CardValidator with correct values', async () => {
     await sut.execute(input)
-    const objectCard = {
-      number: '123456789',
-      month: '05',
-      year: '2025',
-      cvv: '123'
-    }
-    expect(cardValidator.execute).toHaveBeenCalledWith(objectCard)
+    expect(cardValidator.execute).toHaveBeenCalledWith('123456789')
   })
 
   test('should return 400 if Card Validator fails', async () => {
     cardValidator.execute.mockReturnValueOnce(false)
-    expect(await sut.execute(input)).toEqual(badRequest(new InvalidParamError('card number')))
+    expect(await sut.execute(input)).toEqual(badRequest(new InvalidParamError('card')))
   })
 
   test('should call GetClientByDocumentUseCase once and with correct document', async () => {

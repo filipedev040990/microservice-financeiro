@@ -1,3 +1,3 @@
 export interface CardValidatorInterface {
-  execute(card: object): boolean
+  execute(card: string): boolean
 }
