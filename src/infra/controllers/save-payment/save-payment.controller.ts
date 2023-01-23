@@ -34,7 +34,10 @@ export class SavePaymentController implements ControllerInterface {
         return badRequest(new InvalidParamError('email'))
       }
 
-      await this.documentValidator.execute(input.body.person_type, input.body.document)
+      const documentIsValid = await this.documentValidator.execute(input.body.person_type, input.body.document)
+      if (!documentIsValid) {
+        return badRequest(new InvalidParamError('document'))
+      }
 
       const client = await this.saveClientUseCase.execute({
         name: input.body.name,

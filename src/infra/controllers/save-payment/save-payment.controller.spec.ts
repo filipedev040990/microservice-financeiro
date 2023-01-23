@@ -96,7 +96,7 @@ describe('SaveClient', () => {
     expect(emailValidator.execute).toHaveBeenCalledWith('zedascouves@gmail.com')
   })
 
-  test('should return 400 if Email Validtor fails', async () => {
+  test('should return 400 if Email Validator fails', async () => {
     emailValidator.execute.mockReturnValueOnce(false)
     expect(await sut.execute(input)).toEqual(badRequest(new InvalidParamError('email')))
   })
@@ -104,6 +104,11 @@ describe('SaveClient', () => {
   test('should call Document Validator with correct values', async () => {
     await sut.execute(input)
     expect(documentValidator.execute).toHaveBeenCalledWith('pf', '04631250020')
+  })
+
+  test('should return 400 if Email Validator fails', async () => {
+    documentValidator.execute.mockReturnValueOnce(false)
+    expect(await sut.execute(input)).toEqual(badRequest(new InvalidParamError('document')))
   })
 
   test('should call GetClientByDocumentUseCase once and with correct document', async () => {
