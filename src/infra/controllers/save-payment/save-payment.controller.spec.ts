@@ -132,6 +132,11 @@ describe('SaveClient', () => {
     expect(cardValidator.execute).toHaveBeenCalledWith('123456789')
   })
 
+  test('should return 400 if Card Validator fails', async () => {
+    cardValidator.execute.mockReturnValueOnce(false)
+    expect(await sut.execute(input)).toEqual(badRequest(new InvalidParamError('card number')))
+  })
+
   test('should call GetClientByDocumentUseCase once and with correct document', async () => {
     await sut.execute(input)
     expect(getClientByDocumentUsecase.execute).toHaveBeenCalledTimes(1)
