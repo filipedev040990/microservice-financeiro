@@ -9,4 +9,9 @@ describe('Card Validator Adapter', () => {
     const sut = makeSut()
     expect(sut.execute('pf', '62986846033')).toBe(true)
   })
+
+  test('should return false if document validator returns false', () => {
+    const sut = makeSut()
+    expect(sut.execute('pf', '123456')).toBe(false)
+  })
 })
