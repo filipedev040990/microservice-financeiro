@@ -1,4 +1,6 @@
 import { SaveAddressUseCaseInterface, SaveCardUseCaseInterface, SaveClientUseCaseInterface, SavePaymentUseCaseInterface, GetClientByDocumentUseCaseInterface } from '@/domain/interfaces'
+import { CardValidatorInterface } from '@/domain/validation/card-validator.interface'
+import { DocumentValidatorInterface } from '@/domain/validation/document-validator.interface'
 import { EmailValidatorInterface } from '@/domain/validation/email-validator.interface'
 import { InvalidParamError, MissingParamError } from '@/shared/errors'
 import { badRequest, noContent, serverError } from '@/shared/helpers/http.helpers'
@@ -35,12 +37,15 @@ const savePaymentUseCase: jest.Mocked<SavePaymentUseCaseInterface> = {
 const emailValidator: jest.Mocked<EmailValidatorInterface> = {
   execute: jest.fn().mockReturnValue(true)
 }
-const documentValidator: jest.Mocked<EmailValidatorInterface> = {
+const documentValidator: jest.Mocked<DocumentValidatorInterface> = {
+  execute: jest.fn().mockReturnValue(true)
+}
+const cardValidator: jest.Mocked<CardValidatorInterface> = {
   execute: jest.fn().mockReturnValue(true)
 }
 
 const makeSut = (): SavePaymentController => {
-  return new SavePaymentController(getClientByDocumentUsecase, saveClientUseCase, saveAddressUseCase, saveCardUseCase, savePaymentUseCase, emailValidator, documentValidator)
+  return new SavePaymentController(getClientByDocumentUsecase, saveClientUseCase, saveAddressUseCase, saveCardUseCase, savePaymentUseCase, emailValidator, documentValidator, cardValidator)
 }
 
 const makeInput = (): HttpRequest => ({
@@ -120,6 +125,11 @@ describe('SaveClient', () => {
   test('should return 400 if State Validator fails', async () => {
     jest.spyOn(sut, 'stateValidate').mockReturnValueOnce(false)
     expect(await sut.execute(input)).toEqual(badRequest(new InvalidParamError('state')))
+  })
+
+  test('should call CardValidtor with correct values', async () => {
+    await sut.execute(input)
+    expect(cardValidator.execute).toHaveBeenCalledWith('123456789')
   })
 
   test('should call GetClientByDocumentUseCase once and with correct document', async () => {
