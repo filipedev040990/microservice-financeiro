@@ -127,9 +127,15 @@ describe('SaveClient', () => {
     expect(await sut.execute(input)).toEqual(badRequest(new InvalidParamError('state')))
   })
 
-  test('should call CardValidtor with correct values', async () => {
+  test('should call CardValidator with correct values', async () => {
     await sut.execute(input)
-    expect(cardValidator.execute).toHaveBeenCalledWith('123456789')
+    const objectCard = {
+      number: '123456789',
+      month: '05',
+      year: '2025',
+      cvv: '123'
+    }
+    expect(cardValidator.execute).toHaveBeenCalledWith(objectCard)
   })
 
   test('should return 400 if Card Validator fails', async () => {
