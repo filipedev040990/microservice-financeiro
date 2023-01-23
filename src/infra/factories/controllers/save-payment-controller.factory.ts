@@ -1,3 +1,5 @@
+import { CardValidatorAdapter } from '@/infra/adapters/card-validator.adapter'
+import { DocumentValidatorAdapter } from '@/infra/adapters/document-validator'
 import { EmailValidatorAdapter } from '@/infra/adapters/email-validator.adapter'
 import { SavePaymentController } from '@/infra/controllers/save-payment/save-payment.controller'
 import { makeGetClientByDocumentUsecaseFactory } from '../usecases/get-client-by-document-usecase.factory'
@@ -13,6 +15,8 @@ export const makeSavePaymentControllerFactory = (): SavePaymentController => {
     makeSaveAddressUseCaseFactory(),
     makeSaveCardUseCaseFactory(),
     makeSavePaymentUseCaseFactory(),
-    new EmailValidatorAdapter()
+    new EmailValidatorAdapter(),
+    new DocumentValidatorAdapter(),
+    new CardValidatorAdapter()
   )
 }
