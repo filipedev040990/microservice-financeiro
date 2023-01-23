@@ -117,6 +117,11 @@ describe('SaveClient', () => {
     expect(spy).toHaveBeenCalledWith('MG')
   })
 
+  test('should return 400 if State Validator fails', async () => {
+    jest.spyOn(sut, 'stateValidate').mockReturnValueOnce(false)
+    expect(await sut.execute(input)).toEqual(badRequest(new InvalidParamError('state')))
+  })
+
   test('should call GetClientByDocumentUseCase once and with correct document', async () => {
     await sut.execute(input)
     expect(getClientByDocumentUsecase.execute).toHaveBeenCalledTimes(1)
