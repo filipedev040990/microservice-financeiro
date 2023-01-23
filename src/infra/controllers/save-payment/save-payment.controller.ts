@@ -1,4 +1,5 @@
 import { ControllerInterface, SaveAddressUseCaseInterface, SaveCardUseCaseInterface, SaveClientUseCaseInterface, SavePaymentUseCaseInterface, GetClientByDocumentUseCaseInterface } from '@/domain/interfaces'
+import constants from '@/shared/constants'
 import { InvalidParamError, MissingParamError } from '@/shared/errors'
 import { badRequest, noContent, serverError } from '@/shared/helpers/http.helpers'
 import { HttpRequest, HttpResponse } from '@/shared/types/http.types'
@@ -55,10 +56,10 @@ export class SavePaymentController implements ControllerInterface {
 
       await this.savePaymentUseCase.execute({
         client_id: client.id,
-        status: 'waiting',
+        status: constants.PAYMENT_STATUS_WAITING,
         attempts_processing: 0,
         installments: input.body.installments,
-        description: 'Compra de curso',
+        description: constants.DESCRIPTION_DEFAULT,
         value: 1200
       })
 
