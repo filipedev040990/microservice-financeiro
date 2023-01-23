@@ -7,6 +7,7 @@ export class Card {
   public month: string
   public year: string
   public cvv: string
+  public brand: string
 
   constructor (input: CardInput) {
     Object.assign(this, input)

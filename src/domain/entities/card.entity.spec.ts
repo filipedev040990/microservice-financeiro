@@ -9,7 +9,8 @@ describe('Card Entity', () => {
       card_number: '123456789',
       cvv: '132',
       month: '05',
-      year: '2025'
+      year: '2025',
+      brand: 'visa'
     }
 
     const card = new Card(input)
@@ -21,7 +22,8 @@ describe('Card Entity', () => {
       card_number: '123456789',
       cvv: '132',
       month: '05',
-      year: '2025'
+      year: '2025',
+      brand: 'visa'
     })
   })
 })

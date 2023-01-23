@@ -54,6 +54,7 @@ const makeInput = (): HttpRequest => ({
     month: '05',
     year: '2025',
     cvv: '123',
+    brand: 'visa',
     installments: 12
   }
 })
@@ -73,7 +74,7 @@ describe('SaveClient', () => {
     const requiredFields = [
       'person_type', 'email', 'document', 'phone', 'cep',
       'street', 'number', 'district', 'city', 'state',
-      'holder_name', 'card_number', 'month', 'year', 'cvv', 'installments'
+      'holder_name', 'card_number', 'month', 'year', 'cvv', 'installments', 'cvv'
     ]
     for (const field of requiredFields) {
       input.body[field] = null
@@ -150,7 +151,8 @@ describe('SaveClient', () => {
       card_number: '123456789',
       month: '05',
       year: '2025',
-      cvv: '123'
+      cvv: '123',
+      brand: 'visa'
     })
   })
 

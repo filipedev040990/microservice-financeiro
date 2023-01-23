@@ -8,7 +8,8 @@ const input: CardInput = {
   card_number: '123456789',
   month: '05',
   year: '2025',
-  cvv: '123'
+  cvv: '123',
+  brand: 'visa'
 }
 
 const cardRepository: jest.Mocked<SaveCardRepositoryInterface> = {

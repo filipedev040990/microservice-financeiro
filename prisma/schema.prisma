@@ -45,6 +45,7 @@ model Card {
   client      Client @relation(fields: [client_id], references: [id])
   client_id   String @unique
   holder_name String
+  brand       String
   card_number String
   cvv         String
   month       String

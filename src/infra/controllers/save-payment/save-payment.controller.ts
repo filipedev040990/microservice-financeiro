@@ -49,7 +49,8 @@ export class SavePaymentController implements ControllerInterface {
         card_number: input.body.card_number,
         cvv: input.body.cvv,
         month: input.body.month,
-        year: input.body.year
+        year: input.body.year,
+        brand: input.body.brand
       })
 
       await this.savePaymentUseCase.execute({
@@ -70,7 +71,7 @@ export class SavePaymentController implements ControllerInterface {
   validateRequiredFields = (input: HttpRequest): string => {
     const requiredFields = [
       'person_type', 'email', 'document', 'phone',
-      'cep', 'street', 'number', 'district', 'city', 'state',
+      'cep', 'street', 'number', 'district', 'city', 'state', 'brand',
       'holder_name', 'card_number', 'month', 'year', 'cvv', 'installments'
     ]
     for (const field of requiredFields) {

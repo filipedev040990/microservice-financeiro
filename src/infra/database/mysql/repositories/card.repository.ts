@@ -10,7 +10,8 @@ export class CardRepository implements SaveCardRepositoryInterface {
         card_number: input.card_number,
         cvv: input.cvv,
         month: input.month,
-        year: input.year
+        year: input.year,
+        brand: input.brand
       }
     })
   }

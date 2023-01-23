@@ -13,7 +13,8 @@ export class SaveCardUseCase implements SaveCardUseCaseInterface {
       card_number: card.card_number,
       cvv: card.cvv,
       month: card.month,
-      year: card.year
+      year: card.year,
+      brand: card.brand
     })
   }
 }

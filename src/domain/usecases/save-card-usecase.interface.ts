@@ -5,6 +5,7 @@ export interface CardInput {
   month: string
   year: string
   cvv: string
+  brand: string
 }
 
 export interface SaveCardUseCaseInterface {
