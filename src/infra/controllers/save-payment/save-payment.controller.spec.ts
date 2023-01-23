@@ -35,9 +35,12 @@ const savePaymentUseCase: jest.Mocked<SavePaymentUseCaseInterface> = {
 const emailValidator: jest.Mocked<EmailValidatorInterface> = {
   execute: jest.fn().mockReturnValue(true)
 }
+const documentValidator: jest.Mocked<EmailValidatorInterface> = {
+  execute: jest.fn().mockReturnValue(true)
+}
 
 const makeSut = (): SavePaymentController => {
-  return new SavePaymentController(getClientByDocumentUsecase, saveClientUseCase, saveAddressUseCase, saveCardUseCase, savePaymentUseCase, emailValidator)
+  return new SavePaymentController(getClientByDocumentUsecase, saveClientUseCase, saveAddressUseCase, saveCardUseCase, savePaymentUseCase, emailValidator, documentValidator)
 }
 
 const makeInput = (): HttpRequest => ({
@@ -96,6 +99,11 @@ describe('SaveClient', () => {
   test('should return 400 if Email Validtor fails', async () => {
     emailValidator.execute.mockReturnValueOnce(false)
     expect(await sut.execute(input)).toEqual(badRequest(new InvalidParamError('email')))
+  })
+
+  test('should call Document Validator with correct values', async () => {
+    await sut.execute(input)
+    expect(documentValidator.execute).toHaveBeenCalledWith('pf', '04631250020')
   })
 
   test('should call GetClientByDocumentUseCase once and with correct document', async () => {

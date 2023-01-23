@@ -1,4 +1,5 @@
 import { ControllerInterface, SaveAddressUseCaseInterface, SaveCardUseCaseInterface, SaveClientUseCaseInterface, SavePaymentUseCaseInterface, GetClientByDocumentUseCaseInterface } from '@/domain/interfaces'
+import { DocumentValidatorInterface } from '@/domain/validation/document-validator.interface'
 import { EmailValidatorInterface } from '@/domain/validation/email-validator.interface'
 import constants from '@/shared/constants'
 import { InvalidParamError, MissingParamError } from '@/shared/errors'
@@ -12,7 +13,8 @@ export class SavePaymentController implements ControllerInterface {
     private readonly saveAddressUseCase: SaveAddressUseCaseInterface,
     private readonly saveCardUseCase: SaveCardUseCaseInterface,
     private readonly savePaymentUseCase: SavePaymentUseCaseInterface,
-    private readonly emailValidator: EmailValidatorInterface
+    private readonly emailValidator: EmailValidatorInterface,
+    private readonly documentValidator: DocumentValidatorInterface
   ) {}
 
   async execute (input: HttpRequest): Promise<HttpResponse> {
@@ -31,6 +33,8 @@ export class SavePaymentController implements ControllerInterface {
       if (!emailIsValid) {
         return badRequest(new InvalidParamError('email'))
       }
+
+      await this.documentValidator.execute(input.body.person_type, input.body.document)
 
       const client = await this.saveClientUseCase.execute({
         name: input.body.name,
