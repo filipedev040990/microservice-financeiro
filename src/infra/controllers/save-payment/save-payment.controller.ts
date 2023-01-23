@@ -27,7 +27,10 @@ export class SavePaymentController implements ControllerInterface {
         return badRequest(new InvalidParamError('This document already in use'))
       }
 
-      await this.emailValidator.execute(input.body.email)
+      const emailIsValid = await this.emailValidator.execute(input.body.email)
+      if (!emailIsValid) {
+        return badRequest(new InvalidParamError('email'))
+      }
 
       const client = await this.saveClientUseCase.execute({
         name: input.body.name,
