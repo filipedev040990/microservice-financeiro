@@ -111,6 +111,12 @@ describe('SaveClient', () => {
     expect(await sut.execute(input)).toEqual(badRequest(new InvalidParamError('document')))
   })
 
+  test('should call stateValidate with correct state', async () => {
+    const spy = jest.spyOn(sut, 'stateValidate')
+    await sut.execute(input)
+    expect(spy).toHaveBeenCalledWith('MG')
+  })
+
   test('should call GetClientByDocumentUseCase once and with correct document', async () => {
     await sut.execute(input)
     expect(getClientByDocumentUsecase.execute).toHaveBeenCalledTimes(1)

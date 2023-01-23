@@ -39,6 +39,8 @@ export class SavePaymentController implements ControllerInterface {
         return badRequest(new InvalidParamError('document'))
       }
 
+      this.stateValidate(input.body.state)
+
       const client = await this.saveClientUseCase.execute({
         name: input.body.name,
         email: input.body.email,
@@ -94,5 +96,9 @@ export class SavePaymentController implements ControllerInterface {
         return field
       }
     }
+  }
+
+  stateValidate = (state: string): boolean => {
+    return constants.STATES.includes(state)
   }
 }
