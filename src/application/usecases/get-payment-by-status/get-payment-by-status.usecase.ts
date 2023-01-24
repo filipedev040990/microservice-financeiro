@@ -5,6 +5,7 @@ import { GetPaymentByStatusUseCaseInterface } from '@/domain/usecases/get-paymen
 export class GetPaymentByStatusUseCase implements GetPaymentByStatusUseCaseInterface {
   constructor (private readonly paymentRepository: GetPaymentByStatusRepositoryInterface) {}
   async execute (status: string): Promise<Payment> {
-    return await this.paymentRepository.getByStatus(status)
+    const payment = await this.paymentRepository.getByStatus(status)
+    return payment || null
   }
 }
