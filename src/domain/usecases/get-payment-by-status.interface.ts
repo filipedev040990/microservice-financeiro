@@ -1,5 +1,5 @@
 import { Payment } from '../entities/payment'
 
-export interface GetPaymentByStatusInterface {
+export interface GetPaymentByStatusUseCaseInterface {
   execute(status: string): Promise<Payment>
 }
