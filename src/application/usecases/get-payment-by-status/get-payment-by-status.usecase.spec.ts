@@ -2,7 +2,7 @@ import { Payment } from '@/domain/entities/payment'
 import { GetPaymentByStatusRepositoryInterface } from '@/domain/repositories/get-payment-by-status-repository.interface'
 import { GetPaymentByStatusUseCase } from './get-payment-by-status.usecase'
 
-const makePayment = (): Payment => ({
+const makePayment = (): Payment [] => ([{
   id: 'any id',
   client_id: '123456789',
   status: 'waiting',
@@ -10,7 +10,7 @@ const makePayment = (): Payment => ({
   description: 'Compra de curso',
   installments: 12,
   value: 1200
-})
+}])
 
 const paymentRepository: jest.Mocked<GetPaymentByStatusRepositoryInterface> = {
   getByStatus: jest.fn().mockResolvedValue(makePayment())
@@ -40,8 +40,8 @@ describe('GetPaymentByStatusUseCase', () => {
     expect(response).toEqual(makePayment())
   })
 
-  test('should return null if PaymentRepository.getByStatus returns null', async () => {
-    paymentRepository.getByStatus.mockReturnValueOnce(null)
-    expect(await sut.execute('waiting')).toBeNull()
+  test('should return empty if PaymentRepository.getByStatus returns null', async () => {
+    paymentRepository.getByStatus.mockReturnValueOnce(Promise.resolve([]))
+    expect(await sut.execute('waiting')).toEqual([])
   })
 })
