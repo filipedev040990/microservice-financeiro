@@ -2,12 +2,13 @@
 
 > ## Caso de sucesso
 
-1. ⛔ Pega os pagamentos com status 'waiting' na tabela payments e coloca em uma fila para o 'gateway' processar
-2. ⛔ Atualiza o status para 'processing' e incrementa o campo attempts_processing
-3. ⛔ Atualiza o status para 'confirmed' e publica mensagem na fila 'payment_confirmed' em caso de sucesso
-4. ⛔ Atualiza o status para 'waiting' novamente em caso de erro e incrementa o campo attempts_processing
-5. ⛔ Atualiza o status para 'refused' novamente em caso de reprovação
-6. ⛔ Tenta processar o pagamento 3 vezes, se não der certo, muda o status para 'canceled'
+1. ✅ Pega os pagamentos com status 'waiting' na tabela payments
+2. ⛔ Coloca em uma fila para o 'gateway' processar
+3. ⛔ Atualiza o status para 'processing' e incrementa o campo attempts_processing
+4. ⛔ Atualiza o status para 'confirmed' e publica mensagem na fila 'payment_confirmed' em caso de sucesso
+5. ⛔ Atualiza o status para 'waiting' novamente em caso de erro e incrementa o campo attempts_processing
+6. ⛔ Atualiza o status para 'refused' novamente em caso de reprovação
+7. ⛔ Tenta processar o pagamento 3 vezes, se não der certo, muda o status para 'canceled'
 
 > ## Exceções
 1. ⛔ Retorna **500** se der erro ao tentar processar o pagamento
