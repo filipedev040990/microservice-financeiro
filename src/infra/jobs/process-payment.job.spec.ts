@@ -64,6 +64,14 @@ describe('ProcessPaymentJob', () => {
     expect(queue.publish).toHaveBeenCalledTimes(2)
   })
 
+  test('should not enqueue payments to processing if attempts is greater than to three', async () => {
+    const payments = makeFakePayments()
+    payments[0].attempts_processing = 4
+    getPaymentByStatus.execute.mockResolvedValueOnce(payments)
+    await sut.execute()
+    expect(queue.publish).toHaveBeenCalledTimes(1)
+  })
+
   test('should call UpdatePaymentStatusUseCase with correct values', async () => {
     await sut.execute('waiting')
     expect(updatePaymentStatus.execute).toHaveBeenCalledTimes(2)

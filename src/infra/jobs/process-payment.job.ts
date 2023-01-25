@@ -17,15 +17,17 @@ export class ProcessPaymentJob implements ProcessPaymentJobInterface {
     if (payments) {
       console.log(payments)
       payments.map(async (payment) => {
-        const payload = {
-          id: payment.id,
-          client_id: payment.client_id,
-          description: payment.description,
-          installments: payment.installments,
-          value: payment.value
+        if (payment.attempts_processing <= constants.MAX_ATTEMPTS_TO_PROCESS) {
+          const payload = {
+            id: payment.id,
+            client_id: payment.client_id,
+            description: payment.description,
+            installments: payment.installments,
+            value: payment.value
+          }
+          await this.queue.publish('payments_processing', 'payments_processing', JSON.stringify(payload))
+          await this.updatePaymentStatus.execute(payment.id, constants.PAYMENT_STATUS_PROCESSING)
         }
-        await this.queue.publish('payments_processing', 'payments_processing', JSON.stringify(payload))
-        await this.updatePaymentStatus.execute(payment.id, constants.PAYMENT_STATUS_PROCESSING)
       })
     }
   }
