@@ -1,4 +1,5 @@
 import { Payment } from '@/domain/entities/payment'
+import { QueueInterface } from '@/domain/queue/queue.interface'
 import { GetPaymentByStatusUseCaseInterface } from '@/domain/usecases/get-payment-by-status.interface'
 import { UpdatePaymentStatusUseCaseInterface } from '@/domain/usecases/update-payment-status.interface'
 import { ProcessPaymentJob } from './process-payment.job'
@@ -32,8 +33,15 @@ const updatePaymentStatus: jest.Mocked<UpdatePaymentStatusUseCaseInterface> = {
   execute: jest.fn()
 }
 
+const queue: jest.Mocked<QueueInterface> = {
+  start: jest.fn(),
+  publish: jest.fn(),
+  consume: jest.fn(),
+  close: jest.fn()
+}
+
 const makeSut = (): ProcessPaymentJob => {
-  return new ProcessPaymentJob(getPaymentByStatus, updatePaymentStatus)
+  return new ProcessPaymentJob(getPaymentByStatus, updatePaymentStatus, queue)
 }
 
 let sut
@@ -41,14 +49,23 @@ describe('ProcessPaymentJob', () => {
   beforeEach(() => {
     sut = makeSut()
   })
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
 
   test('should call GetPaymentByStatusUseCase with correct status', async () => {
-    await sut.execute('waiting')
+    await sut.execute()
+    expect(getPaymentByStatus.execute).toHaveBeenCalledTimes(1)
     expect(getPaymentByStatus.execute).toHaveBeenCalledWith('waiting')
+  })
+
+  test('should enqueue payments to processing if attempts is less than or equal to three', async () => {
+    await sut.execute()
+    expect(queue.publish).toHaveBeenCalledTimes(2)
   })
 
   test('should call UpdatePaymentStatusUseCase with correct values', async () => {
     await sut.execute('waiting')
-    expect(updatePaymentStatus.execute).toHaveBeenCalled()
+    expect(updatePaymentStatus.execute).toHaveBeenCalledTimes(2)
   })
 })
