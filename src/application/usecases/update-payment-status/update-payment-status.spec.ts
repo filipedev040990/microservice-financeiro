@@ -20,4 +20,11 @@ describe('UpdatePaymentUseCase', () => {
     expect(paymentRepository.updateStatus).toHaveBeenCalledTimes(1)
     expect(paymentRepository.updateStatus).toHaveBeenCalledWith('anyID', 'processing')
   })
+
+  test('should return server error if PaymentRepository.updateStatus throws', async () => {
+    paymentRepository.updateStatus.mockImplementationOnce(() => {
+      throw new Error()
+    })
+    await expect(sut.execute('anyID', 'processing')).rejects.toThrow()
+  })
 })
