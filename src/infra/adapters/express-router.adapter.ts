@@ -1,4 +1,4 @@
-import { ControllerInterface } from '@/domain/interfaces'
+import { ControllerInterface } from '@/domain'
 import { HttpRequest } from '@/shared/types/http.types'
 import { Request, Response } from 'express'
 

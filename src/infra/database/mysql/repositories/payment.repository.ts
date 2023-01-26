@@ -1,4 +1,4 @@
-import { PaymentInput, SavePaymentRepositoryInterface } from '@/domain/interfaces'
+import { PaymentInput, SavePaymentRepositoryInterface } from '@/domain'
 import { prismaClient } from './prisma-client'
 
 export class PaymentRepository implements SavePaymentRepositoryInterface {

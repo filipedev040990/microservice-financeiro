@@ -1,4 +1,4 @@
-import { AddressInput, SaveAddressRepositoryInterface } from '@/domain/interfaces'
+import { AddressInput, SaveAddressRepositoryInterface } from '@/domain'
 import { prismaClient } from './prisma-client'
 
 export class AddressRepository implements SaveAddressRepositoryInterface {

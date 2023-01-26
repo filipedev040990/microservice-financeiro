@@ -1,4 +1,4 @@
-import { CardInput, SaveCardRepositoryInterface } from '@/domain/interfaces'
+import { CardInput, SaveCardRepositoryInterface } from '@/domain'
 import { prismaClient } from './prisma-client'
 
 export class CardRepository implements SaveCardRepositoryInterface {

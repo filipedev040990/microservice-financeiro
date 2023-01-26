@@ -1,4 +1,4 @@
-import { ControllerInterface, SaveAddressUseCaseInterface, SaveCardUseCaseInterface, SaveClientUseCaseInterface, SavePaymentUseCaseInterface, GetClientByDocumentUseCaseInterface } from '@/domain/interfaces'
+import { ControllerInterface, SaveAddressUseCaseInterface, SaveCardUseCaseInterface, SaveClientUseCaseInterface, SavePaymentUseCaseInterface, GetClientByDocumentUseCaseInterface } from '@/domain'
 import { CardValidatorInterface } from '@/domain/validation/card-validator.interface'
 import { DocumentValidatorInterface } from '@/domain/validation/document-validator.interface'
 import { EmailValidatorInterface } from '@/domain/validation/email-validator.interface'

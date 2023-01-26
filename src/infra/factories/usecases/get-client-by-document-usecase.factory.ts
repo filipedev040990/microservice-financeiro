@@ -1,5 +1,5 @@
 import { GetClientByDocumentUseCase } from '@/application/usecases/get-client-by-document/get-client-by-document.usecase'
-import { GetClientByDocumentUseCaseInterface } from '@/domain/interfaces'
+import { GetClientByDocumentUseCaseInterface } from '@/domain'
 import { ClientRepository } from '@/infra/database/mysql/repositories/client.repository'
 
 export const makeGetClientByDocumentUsecaseFactory = (): GetClientByDocumentUseCaseInterface => {

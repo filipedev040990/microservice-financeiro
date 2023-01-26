@@ -1,5 +1,5 @@
 import { Client } from '@/domain/entities/client.entity'
-import { ClientInput, GetClientByDocumentRepositoryInterface, SaveClientRepositoryInterface } from '@/domain/interfaces'
+import { ClientInput, GetClientByDocumentRepositoryInterface, SaveClientRepositoryInterface } from '@/domain'
 import { prismaClient } from './prisma-client'
 
 export class ClientRepository implements SaveClientRepositoryInterface, GetClientByDocumentRepositoryInterface {

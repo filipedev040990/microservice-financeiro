@@ -1,9 +1,6 @@
 import { ProcessPaymentJobInterface } from '@/domain/jobs/process-payment-job.interface'
 import { QueueInterface } from '@/domain/queue/queue.interface'
-import { GetPaymentByStatusUseCaseInterface, PaymentOut } from '@/domain/usecases/get-payment-by-status.interface'
-import { SaveLogUseCaseInterface } from '@/domain/usecases/save-log-usecase.interface'
-import { UpdatePaymentAttemptsUseCaseInterface } from '@/domain/usecases/update-payment-attempts.interface'
-import { UpdatePaymentStatusUseCaseInterface } from '@/domain/usecases/update-payment-status.interface'
+import { GetPaymentByStatusUseCaseInterface, PaymentOut, SaveLogUseCaseInterface, UpdatePaymentAttemptsUseCaseInterface, UpdatePaymentStatusUseCaseInterface } from '@/domain'
 import constants from '@/shared/constants'
 
 export class ProcessPaymentJob implements ProcessPaymentJobInterface {
