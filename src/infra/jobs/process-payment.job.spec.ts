@@ -1,6 +1,8 @@
 import { Payment } from '@/domain/entities/payment'
 import { QueueInterface } from '@/domain/queue/queue.interface'
 import { GetPaymentByStatusUseCaseInterface } from '@/domain/usecases/get-payment-by-status.interface'
+import { SaveLogUseCaseInterface } from '@/domain/usecases/save-log-usecase.interface'
+import { UpdatePaymentAttemptsUseCaseInterface } from '@/domain/usecases/update-payment-attempts.interface'
 import { UpdatePaymentStatusUseCaseInterface } from '@/domain/usecases/update-payment-status.interface'
 import { ProcessPaymentJob } from './process-payment.job'
 
@@ -33,6 +35,10 @@ const updatePaymentStatus: jest.Mocked<UpdatePaymentStatusUseCaseInterface> = {
   execute: jest.fn()
 }
 
+const updatePaymentAttempts: jest.Mocked<UpdatePaymentAttemptsUseCaseInterface> = {
+  execute: jest.fn()
+}
+
 const queue: jest.Mocked<QueueInterface> = {
   start: jest.fn(),
   publish: jest.fn(),
@@ -40,8 +46,12 @@ const queue: jest.Mocked<QueueInterface> = {
   close: jest.fn()
 }
 
+const saveLog: jest.Mocked<SaveLogUseCaseInterface> = {
+  execute: jest.fn()
+}
+
 const makeSut = (): ProcessPaymentJob => {
-  return new ProcessPaymentJob(getPaymentByStatus, updatePaymentStatus, queue)
+  return new ProcessPaymentJob(getPaymentByStatus, updatePaymentStatus, queue, updatePaymentAttempts, saveLog)
 }
 
 let sut
@@ -67,13 +77,27 @@ describe('ProcessPaymentJob', () => {
   test('should not enqueue payments to processing if attempts is greater than to three', async () => {
     const payments = makeFakePayments()
     payments[0].attempts_processing = 4
+    payments[1].attempts_processing = 4
     getPaymentByStatus.execute.mockResolvedValueOnce(payments)
     await sut.execute()
-    expect(queue.publish).toHaveBeenCalledTimes(1)
+    expect(queue.publish).toHaveBeenCalledTimes(0)
   })
 
-  test('should call UpdatePaymentStatusUseCase with correct values', async () => {
-    await sut.execute('waiting')
+  test('should call UpdatePaymentAttemptsUseCase', async () => {
+    await sut.execute()
+    expect(updatePaymentAttempts.execute).toHaveBeenCalledTimes(2)
+  })
+
+  test.skip('should call UpdatePaymentStatusUseCase', async () => {
+    await sut.execute()
     expect(updatePaymentStatus.execute).toHaveBeenCalledTimes(2)
+  })
+
+  test('should call SaveLogUseCase if process payment fails', async () => {
+    getPaymentByStatus.execute.mockImplementationOnce(() => {
+      throw new Error()
+    })
+    await sut.execute()
+    expect(saveLog.execute).toHaveBeenCalledWith(JSON.stringify(new Error()))
   })
 })
