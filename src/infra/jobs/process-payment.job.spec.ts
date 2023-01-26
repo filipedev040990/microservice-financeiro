@@ -1,29 +1,54 @@
-import { Payment } from '@/domain/entities/payment'
 import { QueueInterface } from '@/domain/queue/queue.interface'
-import { GetPaymentByStatusUseCaseInterface } from '@/domain/usecases/get-payment-by-status.interface'
+import { GetPaymentByStatusUseCaseInterface, PaymentOut } from '@/domain/usecases/get-payment-by-status.interface'
 import { SaveLogUseCaseInterface } from '@/domain/usecases/save-log-usecase.interface'
 import { UpdatePaymentAttemptsUseCaseInterface } from '@/domain/usecases/update-payment-attempts.interface'
 import { UpdatePaymentStatusUseCaseInterface } from '@/domain/usecases/update-payment-status.interface'
 import { ProcessPaymentJob } from './process-payment.job'
 
-const makeFakePayments = (): Payment [] => ([
+const makeFakePayments = (): PaymentOut [] => ([
   {
-    id: '123456789',
-    client_id: '123456789',
-    status: 'waiting',
-    attempts_processing: 0,
-    description: 'Compra de curso',
-    installments: 12,
-    value: 1200
+    client: {
+      id: '2056d848-3482-4585-87dc-02f2cb827552',
+      holder_name: 'Zé das Couves',
+      email: 'zedascouves@gmail.com',
+      person_type: 'pf',
+      document: '123456789'
+    },
+    card: {
+      number: '132456798798',
+      brand: 'visa',
+      cvv: '132',
+      month: '05',
+      year: '2025'
+    },
+    payment: {
+      id: '13213213213212',
+      installments: 1200,
+      attempts_processing: 0,
+      description: 'Teste'
+    }
   },
   {
-    id: '987654321',
-    client_id: '987654312',
-    status: 'waiting',
-    attempts_processing: 0,
-    description: 'Compra de curso',
-    installments: 1,
-    value: 1200
+    client: {
+      id: '2056d848-3482-4585-87dc-02f2cb84103',
+      holder_name: 'Maria Chiquinha',
+      email: 'maria@gmail.com',
+      person_type: 'pf',
+      document: '987654321'
+    },
+    card: {
+      number: '987654321',
+      brand: 'visa',
+      cvv: '132',
+      month: '05',
+      year: '2025'
+    },
+    payment: {
+      id: '0317984121323',
+      installments: 1200,
+      attempts_processing: 0,
+      description: 'Compra de curso'
+    }
   }
 ])
 
@@ -76,8 +101,8 @@ describe('ProcessPaymentJob', () => {
 
   test('should not enqueue payments to processing if attempts is greater than to three', async () => {
     const payments = makeFakePayments()
-    payments[0].attempts_processing = 4
-    payments[1].attempts_processing = 4
+    payments[0].payment.attempts_processing = 4
+    payments[1].payment.attempts_processing = 4
     getPaymentByStatus.execute.mockResolvedValueOnce(payments)
     await sut.execute()
     expect(queue.publish).toHaveBeenCalledTimes(0)
