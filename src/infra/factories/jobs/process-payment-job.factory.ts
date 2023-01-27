@@ -1,11 +1,11 @@
 import { GetPaymentByStatusUseCase, UpdatePaymentUseCase, UpdatePaymentAttemptsUseCase } from '@/application/usecases'
-import { SaveLogUseCase } from '@/application/usecases/save-log/save-payment.usecase'
 import { ProcessPaymentJobInterface } from '@/domain/jobs/process-payment-job.interface'
 import { RabbitmqAdapter } from '@/infra/adapters/rabbitmq.adapter'
 import { LogRepository } from '@/infra/database/mysql/repositories/log.repository'
 import { PaymentRepository } from '@/infra/database/mysql/repositories/payment.repository'
 import { ProcessPaymentJob } from '@/infra/jobs/process-payment.job'
 import config from '@/infra/config'
+import { SaveLogUseCase } from '@/application/usecases/save-log.usecase'
 
 export const makeProcessPaymentJobFactory = (): ProcessPaymentJobInterface => {
   const paymentRepository = new PaymentRepository()
