@@ -1,5 +1,5 @@
 import request from 'supertest'
-import { app } from './app'
+import { app } from '@/infra/app'
 
 describe('Payments routes', () => {
   test.skip('should create an new payment', async () => {

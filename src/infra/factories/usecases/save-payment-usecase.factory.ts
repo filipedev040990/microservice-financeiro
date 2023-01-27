@@ -1,4 +1,4 @@
-import { SavePaymentUseCase } from '@/application/usecases/save-payment/save-payment.usecase'
+import { SavePaymentUseCase } from '@/application/usecases/save-payment.usecase'
 import { PaymentRepository } from '@/infra/database/mysql/repositories/payment.repository'
 
 export const makeSavePaymentUseCaseFactory = (): SavePaymentUseCase => {

@@ -1,5 +1,5 @@
 import MockDate from 'mockdate'
-import { Log } from './log.entity'
+import { Log } from '@/domain/entities/log.entity'
 
 describe('Log Entity', () => {
   beforeAll(() => {

@@ -1,5 +1,5 @@
 import { UpdatePaymentRepositoryInterface } from '@/domain/repositories/update-payment-repository.interface'
-import { UpdatePaymentUseCase } from './update-payment-status'
+import { UpdatePaymentUseCase } from '@/application/usecases/update-payment-status'
 
 const paymentRepository: jest.Mocked<UpdatePaymentRepositoryInterface> = {
   updateStatus: jest.fn()

@@ -1,4 +1,4 @@
-import { DocumentValidatorAdapter } from './document-validator'
+import { DocumentValidatorAdapter } from '@/infra/adapters/document-validator'
 
 const makeSut = (): DocumentValidatorAdapter => {
   return new DocumentValidatorAdapter()

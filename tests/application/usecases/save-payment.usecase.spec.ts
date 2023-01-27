@@ -1,6 +1,6 @@
 import { SavePaymentRepositoryInterface } from '@/domain/repositories/save-payment-repository.interface'
 import { PaymentInput } from '@/domain/usecases/save-payment-usecase.interface'
-import { SavePaymentUseCase } from './save-payment.usecase'
+import { SavePaymentUseCase } from '@/application/usecases/save-payment.usecase'
 
 const paymentRepository: jest.Mocked<SavePaymentRepositoryInterface> = {
   save: jest.fn()

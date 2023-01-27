@@ -1,5 +1,5 @@
-import { CardInput } from '../usecases/save-card-usecase.interface'
-import { Card } from './card.entity'
+import { CardInput } from '@/domain/usecases/save-card-usecase.interface'
+import { Card } from '@/domain/entities/card.entity'
 
 describe('Card Entity', () => {
   test('should create an instance of Card', () => {

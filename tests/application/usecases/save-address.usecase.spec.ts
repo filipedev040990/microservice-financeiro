@@ -1,6 +1,6 @@
 import { SaveAddressRepositoryInterface } from '@/domain/repositories/save-address-repository.interface'
 import { AddressInput } from '@/domain/usecases/save-address-usecase.interface'
-import { SaveAddressUseCase } from './save-address.usecase'
+import { SaveAddressUseCase } from '@/application/usecases/save-address.usecase'
 
 const addressRepository: jest.Mocked<SaveAddressRepositoryInterface> = {
   save: jest.fn()

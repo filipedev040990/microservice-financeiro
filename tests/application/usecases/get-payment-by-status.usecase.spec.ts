@@ -1,6 +1,6 @@
 import { PaymentOut } from '@/domain'
 import { GetPaymentByStatusRepositoryInterface } from '@/domain/repositories/get-payment-by-status-repository.interface'
-import { GetPaymentByStatusUseCase } from './get-payment-by-status.usecase'
+import { GetPaymentByStatusUseCase } from '@/application/usecases/get-payment-by-status.usecase'
 
 const makePayment = (): PaymentOut [] => ([{
   client: {

@@ -1,6 +1,7 @@
-import { Address } from './address.entity'
+
+import { Address } from '@/domain/entities/address.entity'
 import MockDate from 'mockdate'
-import { AddressInput } from '../usecases/save-address-usecase.interface'
+import { AddressInput } from '@/domain/usecases/save-address-usecase.interface'
 
 describe('Address Entity', () => {
   beforeAll(() => {

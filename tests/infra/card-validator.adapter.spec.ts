@@ -1,4 +1,5 @@
-import { CardValidatorAdapter } from './card-validator.adapter'
+
+import { CardValidatorAdapter } from '@/infra/adapters/card-validator.adapter'
 import validator from 'validator'
 
 jest.mock('validator', () => ({

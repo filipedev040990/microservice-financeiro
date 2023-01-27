@@ -1,10 +1,10 @@
-import { QueueInterface } from '@/domain/queue/queue.interface'
 import { GetPaymentByStatusUseCaseInterface } from '@/domain/usecases/get-payment-by-status.interface'
 import { SaveLogUseCaseInterface } from '@/domain/usecases/save-log-usecase.interface'
 import { UpdatePaymentAttemptsUseCaseInterface } from '@/domain/usecases/update-payment-attempts.interface'
 import { UpdatePaymentStatusUseCaseInterface } from '@/domain/usecases/update-payment-status.interface'
-import { ProcessPaymentJob } from './process-payment.job'
+import { ProcessPaymentJob } from '../../src/infra/jobs/process-payment.job'
 import MockDate from 'mockdate'
+import { QueueInterface } from '@/domain/queue/queue.interface'
 
 const makeFakePayments = (): any [] => ([
   {

@@ -1,11 +1,11 @@
-import { SaveAddressUseCaseInterface, SaveCardUseCaseInterface, SaveClientUseCaseInterface, SavePaymentUseCaseInterface, GetClientByDocumentUseCaseInterface } from '@/domain'
+import { GetClientByDocumentUseCaseInterface, SaveAddressUseCaseInterface, SaveCardUseCaseInterface, SaveClientUseCaseInterface, SavePaymentUseCaseInterface } from '@/domain'
 import { CardValidatorInterface } from '@/domain/validation/card-validator.interface'
 import { DocumentValidatorInterface } from '@/domain/validation/document-validator.interface'
 import { EmailValidatorInterface } from '@/domain/validation/email-validator.interface'
 import { InvalidParamError, MissingParamError } from '@/shared/errors'
 import { badRequest, noContent, serverError } from '@/shared/helpers/http.helpers'
 import { HttpRequest } from '@/shared/types/http.types'
-import { SavePaymentController } from './save-payment.controller'
+import { SavePaymentController } from '@/infra/controllers/save-payment/save-payment.controller'
 
 const saveClientUseCase: jest.Mocked<SaveClientUseCaseInterface> = {
   execute: jest.fn().mockResolvedValue({

@@ -1,4 +1,4 @@
-import { SaveCardUseCase } from '@/application/usecases/save-card/save-card.usecase'
+import { SaveCardUseCase } from '@/application/usecases/save-card.usecase'
 import { CardRepository } from '@/infra/database/mysql/repositories/card.repository'
 
 export const makeSaveCardUseCaseFactory = (): SaveCardUseCase => {

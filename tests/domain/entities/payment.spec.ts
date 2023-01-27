@@ -1,4 +1,4 @@
-import { Payment } from './payment'
+import { Payment } from '@/domain/entities/payment'
 const input = {
   client_id: '123456789',
   status: 'waiting',

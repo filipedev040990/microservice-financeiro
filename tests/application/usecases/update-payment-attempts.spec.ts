@@ -1,5 +1,5 @@
 import { UpdatePaymentAttemptsRepositoryInterface } from '@/domain/repositories/update-payment-attempts-repository.interface'
-import { UpdatePaymentAttemptsUseCase } from './update-payment-attempts'
+import { UpdatePaymentAttemptsUseCase } from '@/application/usecases/update-payment-attempts'
 
 const paymentRepository: jest.Mocked<UpdatePaymentAttemptsRepositoryInterface> = {
   updateAttempts: jest.fn()

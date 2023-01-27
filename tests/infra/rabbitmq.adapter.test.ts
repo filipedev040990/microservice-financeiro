@@ -1,4 +1,4 @@
-import { RabbitmqAdapter } from './rabbitmq.adapter'
+import { RabbitmqAdapter } from '@/infra/adapters/rabbitmq.adapter'
 
 const makeSut = (): RabbitmqAdapter => {
   return new RabbitmqAdapter('amqp://admin:admin@172.22.0.2:5672')

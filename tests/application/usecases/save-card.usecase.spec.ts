@@ -1,6 +1,6 @@
 import { SaveCardRepositoryInterface } from '@/domain/repositories/save-card-repository.interface'
 import { CardInput } from '@/domain/usecases/save-card-usecase.interface'
-import { SaveCardUseCase } from './save-card.usecase'
+import { SaveCardUseCase } from '@/application/usecases/save-card.usecase'
 
 const input: CardInput = {
   client_id: '123456789',
