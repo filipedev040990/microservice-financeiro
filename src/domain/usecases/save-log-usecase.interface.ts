@@ -1,3 +1,5 @@
+import { LogInput } from '../repositories/save-log-repository.interface'
+
 export interface SaveLogUseCaseInterface {
-  execute(log: string): Promise<void>
+  execute(log: LogInput): Promise<void>
 }

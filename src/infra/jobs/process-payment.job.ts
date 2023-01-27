@@ -18,24 +18,27 @@ export class ProcessPaymentJob implements ProcessPaymentJobInterface {
 
       if (payments) {
         payments.map(async (payment) => {
-          const attempts = payment.payment.attempts_processing
+          const attempts = +payment.attempts_processing
           const maxAttempts = constants.MAX_ATTEMPTS_TO_PROCESS
           const canEnqueue = attempts <= maxAttempts
-          const clientId = payment.client.id
 
           const payload = JSON.stringify(this.makePayload(payment))
 
           if (canEnqueue) {
+            await this.queue.start()
             await this.queue.publish('payments_processing', 'payments_processing', payload)
-            await this.updatePaymentAttempts.execute(clientId, attempts + 1)
+            await this.updatePaymentAttempts.execute(payment.id, attempts + 1)
           }
-
           const newStatus = canEnqueue ? constants.PAYMENT_STATUS_PROCESSING : constants.PAYMENT_STATUS_CANCELED
-          await this.updatePaymentStatus.execute(clientId, newStatus)
+          await this.updatePaymentStatus.execute(payment.id, newStatus)
         })
       }
     } catch (error) {
-      await this.saveLog.execute(JSON.stringify(error))
+      const logInput = {
+        log: JSON.stringify(error),
+        created_at: new Date()
+      }
+      await this.saveLog.execute(logInput)
     }
   }
 
@@ -43,23 +46,24 @@ export class ProcessPaymentJob implements ProcessPaymentJobInterface {
     return {
       client: {
         id: payment.client.id,
-        holder_name: payment.client.holder_name,
         email: payment.client.email,
         person_type: payment.client.person_type,
         document: payment.client.document
       },
       card: {
-        number: payment.card.number,
-        brand: payment.card.brand,
-        cvv: payment.card.cvv,
-        month: payment.card.month,
-        year: payment.card.year
+        holder_name: payment.client.holder_name,
+        number: payment.client.Card.card_number,
+        brand: payment.client.Card.brand,
+        cvv: payment.client.Card.cvv,
+        month: payment.client.Card.month,
+        year: payment.client.Card.year
       },
       payment: {
-        id: payment.payment.id,
-        installments: payment.payment.installments,
-        attempts_processing: payment.payment.attempts_processing,
-        description: payment.payment.description
+        id: payment.id,
+        installments: payment.installments,
+        attempts_processing: payment.attempts_processing,
+        description: payment.description,
+        value: payment.value
       }
     }
   }

@@ -66,3 +66,11 @@ model Payment {
 
   @@map("payments")
 }
+
+model Log {
+  id         String   @id @default(uuid())
+  log        String
+  created_at DateTime
+
+  @@map("logs")
+}

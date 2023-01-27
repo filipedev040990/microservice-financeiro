@@ -1,12 +1,12 @@
 type ClientOutput = {
   id: string
-  holder_name: string
   email: string
   person_type: string
   document: string
 }
 
 type CardOutput = {
+  holder_name: string
   number: string
   brand: string
   cvv: string
@@ -19,14 +19,15 @@ type PaymentOutput = {
   installments: number
   attempts_processing: number
   description: string
+  value: number
 }
 
 export type PaymentOut = {
+  payment: PaymentOutput
   client: ClientOutput
   card: CardOutput
-  payment: PaymentOutput
 }
 
 export interface GetPaymentByStatusUseCaseInterface {
-  execute(status: string): Promise<PaymentOut[]>
+  execute(status: string): Promise<any[]>
 }
