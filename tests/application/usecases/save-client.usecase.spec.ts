@@ -1,18 +1,8 @@
-import { Client } from '@/domain/entities/client.entity'
 import { SaveClientRepositoryInterface } from '@/domain/repositories/save-client-repository.interface'
 import { SaveClientUseCase } from '@/application/usecases/save-client.usecase'
 import MockDate from 'mockdate'
 import { ClientInput } from '@/domain/usecases/save-client-usecase.interface'
-
-const makeFakeClient = (): Client => ({
-  id: 'any id',
-  name: 'Zé das Couves',
-  person_type: 'pf',
-  email: 'zedascouves@gmail.com',
-  document: '04631250020',
-  phone: '32998523623',
-  created_at: new Date('2023-01-20')
-})
+import { makeFakeClient } from '@/tests/mocks/client.mock'
 
 const clientRepository: jest.Mocked<SaveClientRepositoryInterface> = {
   save: jest.fn().mockReturnValue(makeFakeClient())
