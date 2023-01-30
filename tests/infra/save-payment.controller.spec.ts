@@ -4,8 +4,8 @@ import { DocumentValidatorInterface } from '@/domain/validation/document-validat
 import { EmailValidatorInterface } from '@/domain/validation/email-validator.interface'
 import { InvalidParamError, MissingParamError } from '@/shared/errors'
 import { badRequest, noContent, serverError } from '@/shared/helpers/http.helpers'
-import { HttpRequest } from '@/shared/types/http.types'
 import { SavePaymentController } from '@/infra/controllers/save-payment/save-payment.controller'
+import { makeInput } from '../mocks/payment.mock'
 
 const saveClientUseCase: jest.Mocked<SaveClientUseCaseInterface> = {
   execute: jest.fn().mockResolvedValue({
@@ -47,30 +47,6 @@ const cardValidator: jest.Mocked<CardValidatorInterface> = {
 const makeSut = (): SavePaymentController => {
   return new SavePaymentController(getClientByDocumentUsecase, saveClientUseCase, saveAddressUseCase, saveCardUseCase, savePaymentUseCase, emailValidator, documentValidator, cardValidator)
 }
-
-const makeInput = (): HttpRequest => ({
-  body: {
-    name: 'Zé das Couves',
-    person_type: 'pf',
-    email: 'zedascouves@gmail.com',
-    document: '04631250020',
-    phone: '32998523623',
-    cep: '36202346',
-    street: 'Rua Teste',
-    number: '123',
-    complement: '',
-    district: 'Centro',
-    city: 'Barbacena',
-    state: 'MG',
-    holder_name: 'Zé das Couves',
-    card_number: '123456789',
-    month: '05',
-    year: '2025',
-    cvv: '123',
-    brand: 'visa',
-    installments: 12
-  }
-})
 
 let input
 let sut
