@@ -1,27 +1,22 @@
+import { DocumentValidator } from '@/infra/validators/document-validator'
 import { DocumentValidatorAdapter } from '@/infra/adapters/document-validator'
 
-const makeSut = (): DocumentValidatorAdapter => {
-  return new DocumentValidatorAdapter()
+const documentValidatorAdapterStub: jest.Mocked<DocumentValidatorAdapter> = {
+  execute: jest.fn()
 }
 
-describe('Card Validator Adapter', () => {
-  test('should return true if document validator returns true', () => {
-    const sut = makeSut()
-    expect(sut.execute('pf', '62986846033')).toBe(true)
-  })
+const makeSut = (): DocumentValidator => {
+  return new DocumentValidator('cpf', documentValidatorAdapterStub)
+}
 
-  test('should return false if document validator returns false', () => {
-    const sut = makeSut()
-    expect(sut.execute('pf', '123456')).toBe(false)
-  })
+let sut: DocumentValidator
 
-  test('should return true if document validator returns true', () => {
-    const sut = makeSut()
-    expect(sut.execute('pj', '12738608000105')).toBe(true)
+describe('DocumentValidator', () => {
+  beforeEach(() => {
+    sut = makeSut()
   })
-
-  test('should return true if document validator returns true', () => {
-    const sut = makeSut()
-    expect(sut.execute('pj', 'x132x13x2123x1x')).toBe(false)
+  test('should call DocumentValidator with correct values', () => {
+    sut.validate({ document: '123456789' })
+    expect(documentValidatorAdapterStub.execute).toHaveBeenCalledWith('cpf', '123456789')
   })
 })
