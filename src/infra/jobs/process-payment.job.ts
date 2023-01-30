@@ -22,9 +22,8 @@ export class ProcessPaymentJob implements ProcessPaymentJobInterface {
           const maxAttempts = constants.MAX_ATTEMPTS_TO_PROCESS
           const canEnqueue = attempts <= maxAttempts
 
-          const payload = JSON.stringify(this.makePayload(payment))
-
           if (canEnqueue) {
+            const payload = JSON.stringify(this.makePayload(payment))
             await this.queue.start()
             await this.queue.publish('payments_processing', 'payments_processing', payload)
             await this.updatePaymentAttempts.execute(payment.id, attempts + 1)

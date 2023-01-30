@@ -5,7 +5,7 @@ import { CardValidatorAdapter } from '../adapters/card-validator.adapter'
 export class CardValidator implements ValidationInterface {
   constructor (private readonly cardValidatorAdapter: CardValidatorAdapter) {}
   validate (input: any): Error {
-    const cardValid = this.cardValidatorAdapter.execute(input.card)
+    const cardValid = this.cardValidatorAdapter.execute(input.card_number)
     if (!cardValid) {
       return new InvalidParamError('card')
     }
