@@ -16,7 +16,10 @@ describe('StateValidator', () => {
   })
 
   test('should return 400 if Validate fails', () => {
-    const response = sut.validate({ state: 'ANY' })
-    expect(response).toEqual(new InvalidParamError('state'))
+    expect(sut.validate({ state: 'ANY' })).toEqual(new InvalidParamError('state'))
+  })
+
+  test('should not return if validation succeeds', () => {
+    expect(sut.validate({ state: 'MG' })).toBeFalsy()
   })
 })
