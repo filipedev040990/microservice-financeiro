@@ -1,11 +1,9 @@
 import { GetClientByDocumentUseCaseInterface, SaveAddressUseCaseInterface, SaveCardUseCaseInterface, SaveClientUseCaseInterface, SavePaymentUseCaseInterface } from '@/domain'
-import { CardValidatorInterface } from '@/domain/validation/card-validator.interface'
-import { DocumentValidatorInterface } from '@/domain/validation/document-validator.interface'
-import { EmailValidatorInterface } from '@/domain/validation/email-validator.interface'
-import { InvalidParamError, MissingParamError } from '@/shared/errors'
+import { InvalidParamError } from '@/shared/errors'
 import { badRequest, noContent, serverError } from '@/shared/helpers/http.helpers'
 import { SavePaymentController } from '@/infra/controllers/save-payment/save-payment.controller'
 import { makeInput } from '../mocks/payment.mock'
+import { ValidationInterface } from '@/domain/validation/validation.interface'
 
 const saveClientUseCase: jest.Mocked<SaveClientUseCaseInterface> = {
   execute: jest.fn().mockResolvedValue({
@@ -34,18 +32,12 @@ const savePaymentUseCase: jest.Mocked<SavePaymentUseCaseInterface> = {
   execute: jest.fn()
 }
 
-const emailValidator: jest.Mocked<EmailValidatorInterface> = {
-  execute: jest.fn().mockReturnValue(true)
-}
-const documentValidator: jest.Mocked<DocumentValidatorInterface> = {
-  execute: jest.fn().mockReturnValue(true)
-}
-const cardValidator: jest.Mocked<CardValidatorInterface> = {
-  execute: jest.fn().mockReturnValue(true)
+const validation: jest.Mocked<ValidationInterface> = {
+  validate: jest.fn()
 }
 
 const makeSut = (): SavePaymentController => {
-  return new SavePaymentController(getClientByDocumentUsecase, saveClientUseCase, saveAddressUseCase, saveCardUseCase, savePaymentUseCase, emailValidator, documentValidator, cardValidator)
+  return new SavePaymentController(getClientByDocumentUsecase, saveClientUseCase, saveAddressUseCase, saveCardUseCase, savePaymentUseCase, validation)
 }
 
 let input
@@ -59,58 +51,9 @@ describe('SaveClient', () => {
     jest.clearAllMocks()
   })
 
-  test('should return 400 if validate required fields fails', async () => {
-    const requiredFields = [
-      'person_type', 'email', 'document', 'phone', 'cep',
-      'street', 'number', 'district', 'city', 'state',
-      'holder_name', 'card_number', 'month', 'year', 'cvv', 'installments', 'cvv'
-    ]
-    for (const field of requiredFields) {
-      input.body[field] = null
-      expect(await sut.execute(input)).toEqual(badRequest(new MissingParamError(field)))
-      input.body[field] = field
-    }
-  })
-
-  test('should return call Email Validator with correct email', async () => {
+  test('should call validation with correct values', async () => {
     await sut.execute(input)
-    expect(emailValidator.execute).toHaveBeenCalledWith('zedascouves@gmail.com')
-  })
-
-  test('should return 400 if Email Validator fails', async () => {
-    emailValidator.execute.mockReturnValueOnce(false)
-    expect(await sut.execute(input)).toEqual(badRequest(new InvalidParamError('email')))
-  })
-
-  test('should call Document Validator with correct values', async () => {
-    await sut.execute(input)
-    expect(documentValidator.execute).toHaveBeenCalledWith('pf', '04631250020')
-  })
-
-  test('should return 400 if Email Validator fails', async () => {
-    documentValidator.execute.mockReturnValueOnce(false)
-    expect(await sut.execute(input)).toEqual(badRequest(new InvalidParamError('document')))
-  })
-
-  test('should call stateValidate with correct state', async () => {
-    const spy = jest.spyOn(sut, 'stateValidate')
-    await sut.execute(input)
-    expect(spy).toHaveBeenCalledWith('MG')
-  })
-
-  test('should return 400 if State Validator fails', async () => {
-    jest.spyOn(sut, 'stateValidate').mockReturnValueOnce(false)
-    expect(await sut.execute(input)).toEqual(badRequest(new InvalidParamError('state')))
-  })
-
-  test('should call CardValidator with correct values', async () => {
-    await sut.execute(input)
-    expect(cardValidator.execute).toHaveBeenCalledWith('123456789')
-  })
-
-  test('should return 400 if Card Validator fails', async () => {
-    cardValidator.execute.mockReturnValueOnce(false)
-    expect(await sut.execute(input)).toEqual(badRequest(new InvalidParamError('card')))
+    expect(validation.validate).toHaveBeenCalledWith(input.body)
   })
 
   test('should call GetClientByDocumentUseCase once and with correct document', async () => {
