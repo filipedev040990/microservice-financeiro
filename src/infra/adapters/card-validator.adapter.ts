@@ -1,8 +1,10 @@
+import { ValidationInterface } from '@/domain/validation/validation.interface'
 import validator from 'validator'
-import { CardValidatorInterface } from '@/domain/validation/card-validator.interface'
 
-export class CardValidatorAdapter implements CardValidatorInterface {
-  execute (card: string): boolean {
-    return validator.isCreditCard(card)
+export class CardValidatorAdapter implements ValidationInterface {
+  validate (card: string): Error {
+    if (!validator.isCreditCard(card)) {
+      return false
+    }
   }
 }
