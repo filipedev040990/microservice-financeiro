@@ -34,4 +34,8 @@ describe('Validation Composite', () => {
     validatorsStub[0].validate.mockReturnValueOnce(error)
     expect(sut.validate(input)).toEqual(error)
   })
+
+  test('should not return if validations succeeds', () => {
+    expect(sut.validate(input)).toBeFalsy()
+  })
 })
