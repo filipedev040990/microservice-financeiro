@@ -29,4 +29,8 @@ describe('CardValidator', () => {
     cardValidatorAdapter.execute.mockReturnValueOnce(false)
     expect(sut.validate({ card: 'invalidCard13132123' })).toEqual(new InvalidParamError('card'))
   })
+
+  test('should not return if validation succeeds', () => {
+    expect(sut.validate({ card: '123456798' })).toBeFalsy()
+  })
 })
