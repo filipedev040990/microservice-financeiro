@@ -1,4 +1,5 @@
 import { ValidationInterface } from '@/domain/validation/validation.interface'
+import { InvalidParamError } from '@/shared/errors'
 import { DocumentValidatorAdapter } from '../adapters/document-validator'
 
 export class DocumentValidator implements ValidationInterface {
@@ -8,7 +9,9 @@ export class DocumentValidator implements ValidationInterface {
   ) {}
 
   validate (input: any): Error {
-    this.documentValidtorAdapter.execute(this.documentType, input.document)
-    return null
+    const documentValid = this.documentValidtorAdapter.execute(this.documentType, input.document)
+    if (!documentValid) {
+      return new InvalidParamError(this.documentType)
+    }
   }
 }
