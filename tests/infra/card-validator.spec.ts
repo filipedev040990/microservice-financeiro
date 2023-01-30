@@ -21,16 +21,16 @@ describe('CardValidator', () => {
   })
 
   test('should call CardValidatorAdapter with correct card', () => {
-    sut.validate({ card: '123456789' })
+    sut.validate({ card_number: '123456789' })
     expect(cardValidatorAdapter.execute).toHaveBeenCalledWith('123456789')
   })
 
   test('should return 400 if CardValidatorAdapter return false', () => {
     cardValidatorAdapter.execute.mockReturnValueOnce(false)
-    expect(sut.validate({ card: 'invalidCard13132123' })).toEqual(new InvalidParamError('card'))
+    expect(sut.validate({ card_number: 'invalidCard13132123' })).toEqual(new InvalidParamError('card_number'))
   })
 
   test('should not return if validation succeeds', () => {
-    expect(sut.validate({ card: '123456798' })).toBeFalsy()
+    expect(sut.validate({ card_number: '123456798' })).toBeFalsy()
   })
 })

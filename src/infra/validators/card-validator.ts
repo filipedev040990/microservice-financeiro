@@ -7,7 +7,7 @@ export class CardValidator implements ValidationInterface {
   validate (input: any): Error {
     const cardValid = this.cardValidatorAdapter.execute(input.card_number)
     if (!cardValid) {
-      return new InvalidParamError('card')
+      return new InvalidParamError('card_number')
     }
   }
 }
