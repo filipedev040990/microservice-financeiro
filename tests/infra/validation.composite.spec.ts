@@ -1,6 +1,6 @@
 import { ValidationInterface } from '@/domain/validation/validation.interface'
 import { ValidationComposite } from '@/infra/validators/validation.composite'
-import { MissingParamError } from '@/shared/errors'
+import { InvalidParamError, MissingParamError } from '@/shared/errors'
 
 const emailValidatorStub: jest.Mocked<ValidationInterface> = {
   validate: jest.fn()
@@ -37,5 +37,11 @@ describe('Validation Composite', () => {
 
   test('should not return if validations succeeds', () => {
     expect(sut.validate(input)).toBeFalsy()
+  })
+
+  test('should return the firt errro if more then one validation fails', () => {
+    validatorsStub[0].validate.mockReturnValueOnce(new MissingParamError('field'))
+    validatorsStub[1].validate.mockReturnValueOnce(new InvalidParamError('another field'))
+    expect(sut.validate(input)).toEqual(new MissingParamError('field'))
   })
 })
