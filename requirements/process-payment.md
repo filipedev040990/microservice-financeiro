@@ -6,7 +6,7 @@
 2. ✅ Atualiza o status para 'processing' e incrementa o campo attempts_processing
 3. ✅ Coloca em uma fila para o 'gateway' processar (payments_processing)
 4. ✅ Atualiza o número de tentativas de processamento
-5. ✅ Tenta processar o pagamento 3 vezes, se não der certo, muda o status para 'canceled'
+5. ✅ Tenta processar o pagamento 3 vezes, se não der certo, muda o status para 'refused'
 
 > ## Exceções
 1. ✅ Salva um log se der erro ao tentar processar o pagamento

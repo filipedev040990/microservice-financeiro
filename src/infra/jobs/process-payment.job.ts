@@ -28,7 +28,7 @@ export class ProcessPaymentJob implements ProcessPaymentJobInterface {
             await this.queue.publish('payments_processing', 'payments_processing', payload)
             await this.updatePaymentAttempts.execute(payment.id, attempts + 1)
           }
-          const newStatus = canEnqueue ? constants.PAYMENT_STATUS_PROCESSING : constants.PAYMENT_STATUS_CANCELED
+          const newStatus = canEnqueue ? constants.PAYMENT_STATUS_PROCESSING : constants.PAYMENT_STATUS_REFUSED
           await this.updatePaymentStatus.execute(payment.id, newStatus)
         })
       }
