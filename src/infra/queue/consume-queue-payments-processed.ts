@@ -6,7 +6,7 @@ import constants from '@/shared/constants'
 import { LogRepository } from '../database/mysql/repositories/log.repository'
 import { PaymentRepository } from '../database/mysql/repositories/payment.repository'
 
-export const ConsumeQueueConfirmedPayment = async (): Promise<void> => {
+export const ConsumeQueueProcessedPayments = async (): Promise<void> => {
   try {
     const queue = new RabbitmqAdapter(config.rabbitmq.uri)
     await queue.start()

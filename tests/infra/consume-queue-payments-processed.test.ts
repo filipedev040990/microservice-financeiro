@@ -1,6 +1,6 @@
 import { RabbitmqAdapter } from '@/infra/adapters/rabbitmq.adapter'
 
-describe('ConsumeQueueConfirmedPayment', () => {
+describe('ConsumeQueueProcessedPayments', () => {
   test.skip('should consume queue payments_processed', async () => {
     const queue = new RabbitmqAdapter('amqp://admin:admin@172.22.0.3:5672')
     await queue.start()
