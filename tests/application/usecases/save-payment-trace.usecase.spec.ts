@@ -16,11 +16,18 @@ export class SavePaymentTraceUseCase {
   }
 }
 
+const paymentRepository: jest.Mocked<SavePaymentTraceRepositoryInterface> = { saveTrace: jest.fn() }
+
 describe('SavePaymentTraceUseCase', () => {
+  let sut: SavePaymentTraceUseCase
+  let input: { paymentId: string, status: string }
+
+  beforeAll(() => {
+    sut = new SavePaymentTraceUseCase(paymentRepository)
+    input = { paymentId: 'anyPaymentId', status: 'anyStatus' }
+  })
+
   test('should call PaymentRepository.saveTrace once and with correct values', async () => {
-    const paymentRepository: jest.Mocked<SavePaymentTraceRepositoryInterface> = { saveTrace: jest.fn() }
-    const sut = new SavePaymentTraceUseCase(paymentRepository)
-    const input = { paymentId: 'anyPaymentId', status: 'anyStatus' }
     await sut.execute(input)
 
     expect(paymentRepository.saveTrace).toHaveBeenCalledTimes(1)
@@ -28,13 +35,8 @@ describe('SavePaymentTraceUseCase', () => {
   })
 
   test('should rethrow if PaymentRepository.saveTrace throws', async () => {
-    const paymentRepository: jest.Mocked<SavePaymentTraceRepositoryInterface> = { saveTrace: jest.fn() }
-    paymentRepository.saveTrace.mockImplementationOnce(() => {
-      throw new Error()
-    })
+    paymentRepository.saveTrace.mockImplementationOnce(() => { throw new Error() })
 
-    const sut = new SavePaymentTraceUseCase(paymentRepository)
-    const input = { paymentId: 'anyPaymentId', status: 'anyStatus' }
     const promise = sut.execute(input)
 
     await expect(promise).rejects.toThrow()
