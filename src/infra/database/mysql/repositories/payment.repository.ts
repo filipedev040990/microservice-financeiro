@@ -13,7 +13,8 @@ export class PaymentRepository implements SavePaymentRepositoryInterface, Update
         attempts_processing: input.attempts_processing,
         value: input.value,
         installments: input.installments,
-        description: input.description
+        description: input.description,
+        created_at: input.created_at
       }
     })
   }

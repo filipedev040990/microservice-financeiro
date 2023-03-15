@@ -13,7 +13,8 @@ export class SavePaymentUseCase implements SavePaymentUseCaseInterface {
       attempts_processing: 0,
       description: payment.description,
       installments: payment.installments,
-      value: payment.value
+      value: payment.value,
+      created_at: payment.created_at
     })
   }
 }

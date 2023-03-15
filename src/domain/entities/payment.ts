@@ -8,8 +8,10 @@ export class Payment {
   public description: string
   public installments: number
   public value: number
+  public created_at: Date
 
   constructor (input: PaymentInput) {
+    this.created_at = new Date()
     Object.assign(this, input)
   }
 }

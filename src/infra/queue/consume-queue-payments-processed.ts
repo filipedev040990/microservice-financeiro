@@ -16,7 +16,6 @@ export const ConsumeQueueProcessedPayments = async (): Promise<void> => {
 
       const paymentRepository = new PaymentRepository()
       const updatePaymentStatus = new UpdatePaymentUseCase(paymentRepository)
-
       await updatePaymentStatus.execute(response.payment_id, status)
     })
   } catch (error) {

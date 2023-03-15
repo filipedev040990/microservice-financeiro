@@ -55,14 +55,15 @@ model Card {
 }
 
 model Payment {
-  id                  String @id @default(uuid())
-  client              Client @relation(fields: [client_id], references: [id])
-  client_id           String @unique
+  id                  String   @id @default(uuid())
+  client              Client   @relation(fields: [client_id], references: [id])
+  client_id           String   @unique
   status              String
   attempts_processing Int
   description         String
   installments        Int
   value               Int
+  created_at          DateTime @default(now())
 
   @@map("payments")
 }

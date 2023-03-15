@@ -5,6 +5,7 @@ export interface PaymentInput {
   attempts_processing: number
   installments: number
   description: string
+  created_at: Date
 }
 
 export interface SavePaymentUseCaseInterface {

@@ -14,7 +14,7 @@ services:
       - ./dist/:/app/dist/
       - ./package.json:/app/package.json
       - ./prisma:/app/prisma
-    command: bash -c "npm install --omit=dev --force && npm run start"
+    command: bash -c "npm install --omit=dev --force && npx prisma migrate dev && npm run start"
     depends_on:
       - mysql
   mysql:
@@ -23,7 +23,6 @@ services:
     restart: always
     environment:
       MYSQL_DATABASE: 'micro-financeiro'
-      MYSQL_USER: 'root'
       MYSQL_PASSWORD: '123456789'
       MYSQL_ROOT_PASSWORD: '123456789'
     ports:
