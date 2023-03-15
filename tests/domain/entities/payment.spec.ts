@@ -5,7 +5,8 @@ const input = {
   attempts_processing: 0,
   description: 'Compra de curso',
   installments: 12,
-  value: 1200
+  value: 1200,
+  created_at: new Date('2023-01-01 00:00:00')
 }
 
 describe('Payment', () => {

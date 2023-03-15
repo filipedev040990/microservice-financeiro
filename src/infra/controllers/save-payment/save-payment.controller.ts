@@ -63,7 +63,8 @@ export class SavePaymentController implements ControllerInterface {
         attempts_processing: 0,
         installments: input.body.installments,
         description: constants.DESCRIPTION_DEFAULT,
-        value: 1200
+        value: 1200,
+        created_at: new Date()
       })
 
       return noContent()

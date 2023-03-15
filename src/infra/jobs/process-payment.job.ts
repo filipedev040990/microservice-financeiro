@@ -15,8 +15,7 @@ export class ProcessPaymentJob implements ProcessPaymentJobInterface {
   async execute (): Promise<void> {
     try {
       const payments = await this.getPaymentByStatus.execute(constants.PAYMENT_STATUS_WAITING)
-
-      if (payments) {
+      if (payments.length) {
         payments.map(async (payment) => {
           const attempts = +payment.attempts_processing
           const maxAttempts = constants.MAX_ATTEMPTS_TO_PROCESS

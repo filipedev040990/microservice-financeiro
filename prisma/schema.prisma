@@ -55,15 +55,16 @@ model Card {
 }
 
 model Payment {
-  id                  String   @id @default(uuid())
-  client              Client   @relation(fields: [client_id], references: [id])
-  client_id           String   @unique
+  id                  String         @id @default(uuid())
+  client              Client         @relation(fields: [client_id], references: [id])
+  client_id           String         @unique
   status              String
   attempts_processing Int
   description         String
   installments        Int
   value               Int
-  created_at          DateTime @default(now())
+  created_at          DateTime       @default(now())
+  PaymentTrace        PaymentTrace[]
 
   @@map("payments")
 }
@@ -74,4 +75,14 @@ model Log {
   created_at DateTime
 
   @@map("logs")
+}
+
+model PaymentTrace {
+  id         String   @id @default(uuid())
+  Payment    Payment  @relation(fields: [payment_id], references: [id])
+  payment_id String
+  status     String
+  created_at DateTime @default(now())
+
+  @@map("payment_trace")
 }

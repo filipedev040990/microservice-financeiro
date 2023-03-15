@@ -12,7 +12,8 @@ const input: PaymentInput = {
   attempts_processing: 0,
   description: 'Compra de curso',
   installments: 12,
-  value: 1200
+  value: 1200,
+  created_at: new Date()
 }
 
 let sut

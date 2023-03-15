@@ -4,6 +4,7 @@ import { badRequest, noContent, serverError } from '@/shared/helpers/http.helper
 import { SavePaymentController } from '@/infra/controllers/save-payment/save-payment.controller'
 import { makeInput } from '../mocks/payment.mock'
 import { ValidationInterface } from '@/domain/validation/validation.interface'
+import MockDate from 'mockdate'
 
 const saveClientUseCase: jest.Mocked<SaveClientUseCaseInterface> = {
   execute: jest.fn().mockResolvedValue({
@@ -43,12 +44,18 @@ const makeSut = (): SavePaymentController => {
 let input
 let sut
 describe('SaveClient', () => {
+  beforeAll(() => {
+    MockDate.set(new Date('2023-01-01 00:00:00'))
+  })
   beforeEach(() => {
     sut = makeSut()
     input = makeInput()
   })
   afterEach(() => {
     jest.clearAllMocks()
+  })
+  afterAll(() => {
+    MockDate.reset()
   })
 
   test('should call validation with correct values', async () => {
@@ -145,7 +152,8 @@ describe('SaveClient', () => {
       value: 1200,
       attempts_processing: 0,
       installments: 12,
-      description: 'Compra de curso'
+      description: 'Compra de curso',
+      created_at: new Date('2023-01-01 00:00:00')
     })
   })
 

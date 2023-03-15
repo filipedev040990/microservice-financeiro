@@ -11,7 +11,6 @@ export class Payment {
   public created_at: Date
 
   constructor (input: PaymentInput) {
-    this.created_at = new Date()
     Object.assign(this, input)
   }
 }
