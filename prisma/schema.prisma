@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -27,7 +24,6 @@ model Client {
 
 model Address {
   id         String  @id @default(uuid())
-  client     Client  @relation(fields: [client_id], references: [id])
   client_id  String  @unique
   cep        String
   street     String
@@ -36,27 +32,27 @@ model Address {
   district   String
   city       String
   state      String
+  client     Client  @relation(fields: [client_id], references: [id])
 
   @@map("address")
 }
 
 model Card {
   id          String @id @default(uuid())
-  client      Client @relation(fields: [client_id], references: [id])
   client_id   String @unique
   holder_name String
-  brand       String
   card_number String
   cvv         String
   month       String
   year        String
+  brand       String
+  client      Client @relation(fields: [client_id], references: [id])
 
   @@map("cards")
 }
 
 model Payment {
   id                  String         @id @default(uuid())
-  client              Client         @relation(fields: [client_id], references: [id])
   client_id           String         @unique
   status              String
   attempts_processing Int
@@ -65,6 +61,7 @@ model Payment {
   value               Int
   created_at          DateTime       @default(now())
   PaymentTrace        PaymentTrace[]
+  client              Client         @relation(fields: [client_id], references: [id])
 
   @@map("payments")
 }
@@ -79,10 +76,11 @@ model Log {
 
 model PaymentTrace {
   id         String   @id @default(uuid())
-  Payment    Payment  @relation(fields: [payment_id], references: [id])
   payment_id String
   status     String
   created_at DateTime @default(now())
+  Payment    Payment  @relation(fields: [payment_id], references: [id])
 
+  @@index([payment_id], map: "payment_trace_payment_id_fkey")
   @@map("payment_trace")
 }
