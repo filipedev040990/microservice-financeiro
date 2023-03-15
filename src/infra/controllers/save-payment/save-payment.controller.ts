@@ -1,4 +1,5 @@
 import { ControllerInterface, SaveAddressUseCaseInterface, SaveCardUseCaseInterface, SaveClientUseCaseInterface, SavePaymentUseCaseInterface, GetClientByDocumentUseCaseInterface } from '@/domain'
+import { SavePaymentTraceInterface } from '@/domain/usecases/save-payment-trace.interface'
 import { ValidationInterface } from '@/domain/validation/validation.interface'
 import constants from '@/shared/constants'
 import { InvalidParamError } from '@/shared/errors'
@@ -12,7 +13,8 @@ export class SavePaymentController implements ControllerInterface {
     private readonly saveAddressUseCase: SaveAddressUseCaseInterface,
     private readonly saveCardUseCase: SaveCardUseCaseInterface,
     private readonly savePaymentUseCase: SavePaymentUseCaseInterface,
-    private readonly validation: ValidationInterface
+    private readonly validation: ValidationInterface,
+    private readonly savePaymentTraceUseCase: SavePaymentTraceInterface
 
   ) {}
 
@@ -57,7 +59,7 @@ export class SavePaymentController implements ControllerInterface {
         brand: input.body.brand
       })
 
-      await this.savePaymentUseCase.execute({
+      const { id } = await this.savePaymentUseCase.execute({
         client_id: client.id,
         status: constants.PAYMENT_STATUS_WAITING,
         attempts_processing: 0,
@@ -65,6 +67,11 @@ export class SavePaymentController implements ControllerInterface {
         description: constants.DESCRIPTION_DEFAULT,
         value: 1200,
         created_at: new Date()
+      })
+
+      await this.savePaymentTraceUseCase.execute({
+        paymentId: id,
+        status: constants.PAYMENT_STATUS_TRACE_INITIAL
       })
 
       return noContent()

@@ -5,6 +5,7 @@ import { SavePaymentController } from '@/infra/controllers/save-payment/save-pay
 import { makeInput } from '../mocks/payment.mock'
 import { ValidationInterface } from '@/domain/validation/validation.interface'
 import MockDate from 'mockdate'
+import { SavePaymentTraceInterface } from '@/domain/usecases/save-payment-trace.interface'
 
 const saveClientUseCase: jest.Mocked<SaveClientUseCaseInterface> = {
   execute: jest.fn().mockResolvedValue({
@@ -30,6 +31,19 @@ const saveCardUseCase: jest.Mocked<SaveCardUseCaseInterface> = {
 }
 
 const savePaymentUseCase: jest.Mocked<SavePaymentUseCaseInterface> = {
+  execute: jest.fn().mockResolvedValue({
+    id: 'anyPaymentId',
+    client_id: '123456789',
+    status: 'waiting',
+    value: 1200,
+    attempts_processing: 0,
+    installments: 12,
+    description: 'Compra de curso',
+    created_at: new Date('2023-01-01 00:00:00')
+  })
+}
+
+const savePaymentTraceUseCase: jest.Mocked<SavePaymentTraceInterface> = {
   execute: jest.fn()
 }
 
@@ -38,7 +52,7 @@ const validation: jest.Mocked<ValidationInterface> = {
 }
 
 const makeSut = (): SavePaymentController => {
-  return new SavePaymentController(getClientByDocumentUsecase, saveClientUseCase, saveAddressUseCase, saveCardUseCase, savePaymentUseCase, validation)
+  return new SavePaymentController(getClientByDocumentUsecase, saveClientUseCase, saveAddressUseCase, saveCardUseCase, savePaymentUseCase, validation, savePaymentTraceUseCase)
 }
 
 let input
@@ -154,6 +168,16 @@ describe('SaveClient', () => {
       installments: 12,
       description: 'Compra de curso',
       created_at: new Date('2023-01-01 00:00:00')
+    })
+  })
+
+  test('should call SavePaymentTraceUseCase once and with correct values', async () => {
+    await sut.execute(input)
+
+    expect(savePaymentTraceUseCase.execute).toHaveBeenCalledTimes(1)
+    expect(savePaymentTraceUseCase.execute).toHaveBeenLastCalledWith({
+      paymentId: 'anyPaymentId',
+      status: 'created'
     })
   })
 
