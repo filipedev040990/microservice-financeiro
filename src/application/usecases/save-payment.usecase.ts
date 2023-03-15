@@ -4,10 +4,10 @@ import { PaymentInput, SavePaymentUseCaseInterface } from '@/domain/usecases/sav
 
 export class SavePaymentUseCase implements SavePaymentUseCaseInterface {
   constructor (private readonly paymentRepository: SavePaymentRepositoryInterface) {}
-  async execute (input: PaymentInput): Promise<void> {
+  async execute (input: PaymentInput): Promise<Payment> {
     const payment = new Payment(input)
 
-    await this.paymentRepository.save({
+    return await this.paymentRepository.save({
       client_id: payment.client_id,
       status: payment.status,
       attempts_processing: 0,

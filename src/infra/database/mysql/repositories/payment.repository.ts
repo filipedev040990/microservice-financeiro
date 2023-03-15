@@ -1,12 +1,13 @@
 import { PaymentInput, SavePaymentRepositoryInterface } from '@/domain'
+import { Payment } from '@/domain/entities/payment'
 import { GetPaymentByStatusRepositoryInterface } from '@/domain/repositories/get-payment-by-status-repository.interface'
 import { UpdatePaymentAttemptsRepositoryInterface } from '@/domain/repositories/update-payment-attempts-repository.interface'
 import { UpdatePaymentRepositoryInterface } from '@/domain/repositories/update-payment-repository.interface'
 import { prismaClient } from './prisma-client'
 
 export class PaymentRepository implements SavePaymentRepositoryInterface, UpdatePaymentAttemptsRepositoryInterface, UpdatePaymentRepositoryInterface, GetPaymentByStatusRepositoryInterface {
-  async save (input: PaymentInput): Promise<void> {
-    await prismaClient.payment.create({
+  async save (input: PaymentInput): Promise<Payment> {
+    return await prismaClient.payment.create({
       data: {
         client_id: input.client_id,
         status: input.status,

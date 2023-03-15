@@ -1,3 +1,5 @@
+import { Payment } from '@/domain/entities/payment'
+
 export interface PaymentInput {
   client_id: string
   status: string
@@ -9,5 +11,5 @@ export interface PaymentInput {
 }
 
 export interface SavePaymentUseCaseInterface {
-  execute(input: PaymentInput): Promise<void>
+  execute(input: PaymentInput): Promise<Payment>
 }
