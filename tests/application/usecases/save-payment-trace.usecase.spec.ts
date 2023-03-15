@@ -26,4 +26,17 @@ describe('SavePaymentTraceUseCase', () => {
     expect(paymentRepository.saveTrace).toHaveBeenCalledTimes(1)
     expect(paymentRepository.saveTrace).toHaveBeenCalledWith(input)
   })
+
+  test('should rethrow if PaymentRepository.saveTrace throws', async () => {
+    const paymentRepository: jest.Mocked<SavePaymentTraceRepositoryInterface> = { saveTrace: jest.fn() }
+    paymentRepository.saveTrace.mockImplementationOnce(() => {
+      throw new Error()
+    })
+
+    const sut = new SavePaymentTraceUseCase(paymentRepository)
+    const input = { paymentId: 'anyPaymentId', status: 'anyStatus' }
+    const promise = sut.execute(input)
+
+    await expect(promise).rejects.toThrow()
+  })
 })
