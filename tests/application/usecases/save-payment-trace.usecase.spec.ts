@@ -1,20 +1,5 @@
-export interface SavePaymentTraceRepositoryInterface {
-  saveTrace (input: SavePaymentTraceUseCase.Input): Promise<void>
-}
-
-export namespace SavePaymentTraceUseCase {
-  export type Input = {
-    paymentId: string
-    status: string
-  }
-}
-
-export class SavePaymentTraceUseCase {
-  constructor (private readonly paymentRepository: SavePaymentTraceRepositoryInterface) {}
-  async execute (input: SavePaymentTraceUseCase.Input): Promise<void> {
-    await this.paymentRepository.saveTrace(input)
-  }
-}
+import { SavePaymentTraceUseCase } from '@/application/usecases'
+import { SavePaymentTraceRepositoryInterface } from '@/domain/repositories/save-payment-trace-repository.interface'
 
 const paymentRepository: jest.Mocked<SavePaymentTraceRepositoryInterface> = { saveTrace: jest.fn() }
 
