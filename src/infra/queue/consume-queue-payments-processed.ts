@@ -1,9 +1,10 @@
-import { UpdatePaymentUseCase } from '@/application/usecases'
+import { SavePaymentTraceUseCase, UpdatePaymentUseCase } from '@/application/usecases'
 import { SaveLogUseCase } from '@/application/usecases/save-log.usecase'
 import { RabbitmqAdapter } from '@/infra/adapters/rabbitmq.adapter'
 import config from '@/infra/config'
 import constants from '@/shared/constants'
 import { LogRepository } from '../database/mysql/repositories/log.repository'
+import { PaymentTraceRepository } from '../database/mysql/repositories/payment-trace.repository'
 import { PaymentRepository } from '../database/mysql/repositories/payment.repository'
 
 export const ConsumeQueueProcessedPayments = async (): Promise<void> => {
@@ -17,6 +18,9 @@ export const ConsumeQueueProcessedPayments = async (): Promise<void> => {
       const paymentRepository = new PaymentRepository()
       const updatePaymentStatus = new UpdatePaymentUseCase(paymentRepository)
       await updatePaymentStatus.execute(response.payment_id, status)
+      const paymentTraceRepository = new PaymentTraceRepository()
+      const savePaymentTrace = new SavePaymentTraceUseCase(paymentTraceRepository)
+      await savePaymentTrace.execute({ paymentId: response.payment_id, status })
     })
   } catch (error) {
     const logRepository = new LogRepository()

@@ -1,7 +1,7 @@
 import { RequiredFieldsValidator } from '@/infra/validators/required-fields.validator'
 import { MissingParamError } from '@/shared/errors'
 import { HttpRequest } from '@/shared/types/http.types'
-import { makeInput } from '../mocks/payment.mock'
+import { makeInput } from '@/domain/entities/payment.mock'
 
 const makeSut = (): RequiredFieldsValidator => {
   return new RequiredFieldsValidator('person_type')

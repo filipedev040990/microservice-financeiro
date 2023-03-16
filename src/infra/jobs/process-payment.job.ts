@@ -2,6 +2,7 @@ import { ProcessPaymentJobInterface } from '@/domain/jobs/process-payment-job.in
 import { QueueInterface } from '@/domain/queue/queue.interface'
 import { GetPaymentByStatusUseCaseInterface, PaymentOut, SaveLogUseCaseInterface, UpdatePaymentAttemptsUseCaseInterface, UpdatePaymentStatusUseCaseInterface } from '@/domain'
 import constants from '@/shared/constants'
+import { SavePaymentTraceInterface } from '@/domain/usecases/save-payment-trace.interface'
 
 export class ProcessPaymentJob implements ProcessPaymentJobInterface {
   constructor (
@@ -9,7 +10,8 @@ export class ProcessPaymentJob implements ProcessPaymentJobInterface {
     private readonly updatePaymentStatus: UpdatePaymentStatusUseCaseInterface,
     private readonly queue: QueueInterface,
     private readonly updatePaymentAttempts: UpdatePaymentAttemptsUseCaseInterface,
-    private readonly saveLog: SaveLogUseCaseInterface
+    private readonly saveLog: SaveLogUseCaseInterface,
+    private readonly savePaymentTrace: SavePaymentTraceInterface
   ) {}
 
   async execute (): Promise<void> {
@@ -20,15 +22,18 @@ export class ProcessPaymentJob implements ProcessPaymentJobInterface {
           const attempts = +payment.attempts_processing
           const maxAttempts = constants.MAX_ATTEMPTS_TO_PROCESS
           const canEnqueue = attempts <= maxAttempts
+          const paymentId = payment.id
+
+          const newStatus = canEnqueue ? constants.PAYMENT_STATUS_PROCESSING : constants.PAYMENT_STATUS_REFUSED
+          await this.savePaymentTrace.execute({ paymentId, status: newStatus })
+          await this.updatePaymentStatus.execute(paymentId, newStatus)
 
           if (canEnqueue) {
             const payload = JSON.stringify(this.makePayload(payment))
             await this.queue.start()
             await this.queue.publish('payments_processing', 'payments_processing', payload)
-            await this.updatePaymentAttempts.execute(payment.id, attempts + 1)
+            await this.updatePaymentAttempts.execute(paymentId, attempts + 1)
           }
-          const newStatus = canEnqueue ? constants.PAYMENT_STATUS_PROCESSING : constants.PAYMENT_STATUS_REFUSED
-          await this.updatePaymentStatus.execute(payment.id, newStatus)
         })
       }
     } catch (error) {

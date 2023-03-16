@@ -1,4 +1,4 @@
-import { GetPaymentByStatusUseCase, UpdatePaymentUseCase, UpdatePaymentAttemptsUseCase } from '@/application/usecases'
+import { GetPaymentByStatusUseCase, UpdatePaymentUseCase, UpdatePaymentAttemptsUseCase, SavePaymentTraceUseCase } from '@/application/usecases'
 import { ProcessPaymentJobInterface } from '@/domain/jobs/process-payment-job.interface'
 import { RabbitmqAdapter } from '@/infra/adapters/rabbitmq.adapter'
 import { LogRepository } from '@/infra/database/mysql/repositories/log.repository'
@@ -6,6 +6,7 @@ import { PaymentRepository } from '@/infra/database/mysql/repositories/payment.r
 import { ProcessPaymentJob } from '@/infra/jobs/process-payment.job'
 import config from '@/infra/config'
 import { SaveLogUseCase } from '@/application/usecases/save-log.usecase'
+import { PaymentTraceRepository } from '@/infra/database/mysql/repositories/payment-trace.repository'
 
 export const makeProcessPaymentJobFactory = (): ProcessPaymentJobInterface => {
   const paymentRepository = new PaymentRepository()
@@ -15,5 +16,7 @@ export const makeProcessPaymentJobFactory = (): ProcessPaymentJobInterface => {
   const updatePaymentAttempts = new UpdatePaymentAttemptsUseCase(paymentRepository)
   const logRepository = new LogRepository()
   const log = new SaveLogUseCase(logRepository)
-  return new ProcessPaymentJob(getPaymentByStatus, updatePaymentStatus, queue, updatePaymentAttempts, log)
+  const paymentTraceRepository = new PaymentTraceRepository()
+  const paymentTraceUseCase = new SavePaymentTraceUseCase(paymentTraceRepository)
+  return new ProcessPaymentJob(getPaymentByStatus, updatePaymentStatus, queue, updatePaymentAttempts, log, paymentTraceUseCase)
 }

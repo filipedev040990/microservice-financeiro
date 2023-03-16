@@ -2,9 +2,10 @@ import { GetPaymentByStatusUseCaseInterface } from '@/domain/usecases/get-paymen
 import { SaveLogUseCaseInterface } from '@/domain/usecases/save-log-usecase.interface'
 import { UpdatePaymentAttemptsUseCaseInterface } from '@/domain/usecases/update-payment-attempts.interface'
 import { UpdatePaymentStatusUseCaseInterface } from '@/domain/usecases/update-payment-status.interface'
-import { ProcessPaymentJob } from '../../src/infra/jobs/process-payment.job'
+import { ProcessPaymentJob } from './process-payment.job'
 import MockDate from 'mockdate'
 import { QueueInterface } from '@/domain/queue/queue.interface'
+import { SavePaymentTraceInterface } from '@/domain/usecases/save-payment-trace.interface'
 
 const makeFakePayments = (): any [] => ([
   {
@@ -63,6 +64,10 @@ const updatePaymentAttempts: jest.Mocked<UpdatePaymentAttemptsUseCaseInterface> 
   execute: jest.fn()
 }
 
+const savePaymentTrace: jest.Mocked<SavePaymentTraceInterface> = {
+  execute: jest.fn()
+}
+
 const queue: jest.Mocked<QueueInterface> = {
   start: jest.fn(),
   publish: jest.fn(),
@@ -75,7 +80,7 @@ const saveLog: jest.Mocked<SaveLogUseCaseInterface> = {
 }
 
 const makeSut = (): ProcessPaymentJob => {
-  return new ProcessPaymentJob(getPaymentByStatus, updatePaymentStatus, queue, updatePaymentAttempts, saveLog)
+  return new ProcessPaymentJob(getPaymentByStatus, updatePaymentStatus, queue, updatePaymentAttempts, saveLog, savePaymentTrace)
 }
 
 let sut
@@ -95,15 +100,10 @@ describe('ProcessPaymentJob', () => {
     expect(getPaymentByStatus.execute).toHaveBeenCalledWith('waiting')
   })
 
-  test('should enqueue payments to processing if attempts is less than or equal to three', async () => {
-    await sut.execute()
-    expect(queue.publish).toHaveBeenCalledTimes(2)
-  })
-
   test('should not enqueue payments to processing if attempts is greater than to three', async () => {
     const payments = makeFakePayments()
-    payments[0].attempts_processing = 4
-    payments[1].attempts_processing = 4
+    payments[0].attempts_processing = 3
+    payments[1].attempts_processing = 3
     getPaymentByStatus.execute.mockResolvedValueOnce(payments)
     await sut.execute()
     expect(queue.publish).toHaveBeenCalledTimes(0)

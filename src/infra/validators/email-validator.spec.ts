@@ -1,6 +1,6 @@
 import { EmailValidator } from '@/infra/validators/email-validator'
 import { InvalidParamError } from '@/shared/errors'
-import { EmailValidatorAdapter } from './adapters/email-validator.adapter'
+import { EmailValidatorAdapter } from '@/infra/adapters/email-validator.adapter'
 
 const emailValidatorStub: jest.Mocked<EmailValidatorAdapter> = {
   execute: jest.fn()

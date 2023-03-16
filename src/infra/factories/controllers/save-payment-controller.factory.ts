@@ -1,4 +1,4 @@
-import { SavePaymentController } from '@/infra/controllers/save-payment/save-payment.controller'
+import { SavePaymentController } from '@/infra/adapters/save-payment.controller'
 import { makeGetClientByDocumentUsecaseFactory } from '../usecases/get-client-by-document-usecase.factory'
 import { makeSaveAddressUseCaseFactory } from '../usecases/save-address-usecase.factory'
 import { makeSaveCardUseCaseFactory } from '../usecases/save-card-usecase.factory'

@@ -45,6 +45,7 @@
     "lint-staged": "^13.0.3",
     "mockdate": "^3.0.5",
     "prisma": "^4.9.0",
+    "prisma-query-log": "^3.2.0",
     "supertest": "^6.3.3",
     "ts-jest": "^28.0.7",
     "ts-node": "^10.9.1",

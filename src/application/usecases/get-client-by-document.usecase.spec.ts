@@ -1,7 +1,7 @@
 import { GetClientByDocumentRepositoryInterface } from '@/domain/repositories/get-client-by-document-repository.interface'
 import MockDate from 'mockdate'
 import { GetClientByDocumentUseCase } from '@/application/usecases/get-client-by-document.usecase'
-import { makeFakeClient } from '@/tests/mocks/client.mock'
+import { makeFakeClient } from '@/domain/entities/client.mock'
 
 const makeSut = (): GetClientByDocumentUseCase => {
   return new GetClientByDocumentUseCase(clientRepository)
