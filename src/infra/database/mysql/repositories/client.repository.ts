@@ -11,6 +11,7 @@ export class ClientRepository implements SaveClientRepositoryInterface, GetClien
         person_type: input.person_type,
         document: input.document,
         phone: input.phone,
+        external_code: input.external_code,
         created_at: input.created_at
       }
     })

@@ -13,6 +13,7 @@ export class SaveClientUseCase implements SaveClientUseCaseInterface {
       person_type: client.person_type,
       document: client.document,
       phone: client.phone,
+      external_code: client.external_code,
       created_at: client.created_at
     })
   }

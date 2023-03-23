@@ -6,6 +6,7 @@ export interface ClientInput {
   email: string
   document: string
   phone: string
+  external_code: string
   created_at?: Date
 }
 

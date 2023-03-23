@@ -3,6 +3,7 @@ type ClientOutput = {
   email: string
   person_type: string
   document: string
+  external_code: string
 }
 
 type CardOutput = {

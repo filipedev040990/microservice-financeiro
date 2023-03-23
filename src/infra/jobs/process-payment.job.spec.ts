@@ -19,6 +19,7 @@ const makeFakePayments = (): any [] => ([
       email: 'zedascouves@gmail.com',
       person_type: 'pf',
       document: '123456789',
+      external_code: 'anyExternalCode',
       Card: {
         holder_name: 'Zé das Couves',
         card_number: '132456798798',
@@ -40,6 +41,7 @@ const makeFakePayments = (): any [] => ([
       email: 'maria@gmail.com',
       person_type: 'pf',
       document: '987654321',
+      external_code: 'anotherAnyExternalCode',
       Card: {
         holder_name: 'Maria Chiquinha',
         card_number: '987654321',

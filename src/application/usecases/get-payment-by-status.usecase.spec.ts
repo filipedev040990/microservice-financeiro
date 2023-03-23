@@ -7,7 +7,8 @@ const makePayment = (): PaymentOut [] => ([{
     id: '2056d848-3482-4585-87dc-02f2cb827552',
     email: 'zedascouves@gmail.com',
     person_type: 'pf',
-    document: '123456789'
+    document: '123456789',
+    external_code: 'anyExternalCode'
   },
   card: {
     holder_name: 'Zé das Couves',

@@ -7,6 +7,7 @@ export class Client {
   public email: string
   public document: string
   public phone: string
+  public external_code: string
   public created_at: Date
 
   constructor (input: ClientInput) {

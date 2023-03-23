@@ -16,7 +16,8 @@ describe('Client Entity', () => {
       person_type: 'pf',
       email: 'zedascouves@gmail.com',
       document: '04631250020',
-      phone: '32998523623'
+      phone: '32998523623',
+      external_code: 'anyExternalCode'
     }
 
     const client = new Client(input)
@@ -27,6 +28,7 @@ describe('Client Entity', () => {
     expect(client.email).toBe('zedascouves@gmail.com')
     expect(client.document).toBe('04631250020')
     expect(client.phone).toBe('32998523623')
+    expect(client.external_code).toBe('anyExternalCode')
     expect(client.created_at).toEqual(new Date())
   })
 })

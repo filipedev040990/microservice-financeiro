@@ -51,7 +51,8 @@ export class ProcessPaymentJob implements ProcessPaymentJobInterface {
         id: payment.client.id,
         email: payment.client.email,
         person_type: payment.client.person_type,
-        document: payment.client.document
+        document: payment.client.document,
+        external_code: payment.external_code
       },
       card: {
         holder_name: payment.client.holder_name,

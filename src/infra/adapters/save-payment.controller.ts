@@ -35,7 +35,8 @@ export class SavePaymentController implements ControllerInterface {
         email: input.body.email,
         person_type: input.body.person_type,
         document: input.body.document,
-        phone: input.body.phone
+        phone: input.body.phone,
+        external_code: input.body.lead_external_code
       })
 
       await this.saveAddressUseCase.execute({

@@ -8,16 +8,17 @@ datasource db {
 }
 
 model Client {
-  id          String   @id @default(uuid())
-  name        String
-  person_type String
-  email       String   @unique
-  document    String   @unique
-  phone       String
-  created_at  DateTime
-  Address     Address?
-  Card        Card?
-  Payment     Payment?
+  id            String   @id @default(uuid())
+  name          String
+  person_type   String
+  email         String   @unique
+  document      String   @unique
+  phone         String
+  external_code String
+  created_at    DateTime
+  Address       Address?
+  Card          Card?
+  Payment       Payment?
 
   @@map("clients")
 }
