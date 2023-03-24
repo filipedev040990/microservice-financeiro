@@ -56,6 +56,7 @@ export class PaymentRepository implements SavePaymentRepositoryInterface, Update
             email: true,
             person_type: true,
             document: true,
+            external_code: true,
             Card: {
               select: {
                 holder_name: true,

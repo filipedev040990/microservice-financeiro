@@ -52,7 +52,7 @@ export class ProcessPaymentJob implements ProcessPaymentJobInterface {
         email: payment.client.email,
         person_type: payment.client.person_type,
         document: payment.client.document,
-        external_code: payment.external_code
+        external_code: payment.client.external_code
       },
       card: {
         holder_name: payment.client.holder_name,

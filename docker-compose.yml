@@ -15,21 +15,22 @@ services:
       - ./package.json:/app/package.json
       - ./prisma:/app/prisma
     command: bash -c "npm install --omit=dev --force && npx prisma migrate dev && npm run start"
-    depends_on:
-      - mysql
-  mysql:
-    container_name: mysql
-    image: mysql:8.0
-    restart: always
-    environment:
-      MYSQL_DATABASE: 'financeiro'
-      MYSQL_PASSWORD: '123456789'
-      MYSQL_ROOT_PASSWORD: '123456789'
-    ports:
-      - '3306:3306'
-    expose:
-      - '3306'
-    volumes:
-      - my-db:/var/lib/mysql
-volumes:
-  my-db:
+
+#     depends_on:
+#       - mysql
+#   mysql:
+#     container_name: mysql
+#     image: mysql:8.0
+#     restart: always
+#     environment:
+#       MYSQL_DATABASE: 'financeiro'
+#       MYSQL_PASSWORD: '123456789'
+#       MYSQL_ROOT_PASSWORD: '123456789'
+#     ports:
+#       - '3306:3306'
+#     expose:
+#       - '3306'
+#     volumes:
+#       - my-db:/var/lib/mysql
+# volumes:
+#   my-db:
